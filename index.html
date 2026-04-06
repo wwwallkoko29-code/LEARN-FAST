@@ -1,201 +1,308 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learn Fast - الكتب</title>
+<title>Books Website 100</title>
 <style>
 body { font-family: Arial, sans-serif; padding: 10px; background: #f0f0f0; }
 h1 { text-align: center; color: #2c3e50; }
-#searchInput { width: 100%; padding: 8px; margin-bottom: 10px; font-size: 16px; }
-#booksContainer button { display: block; width: 100%; margin: 5px 0; padding: 10px; font-size: 16px; }
+select, button, input { margin: 5px 0; width: 100%; padding: 8px; }
+#booksContainer button { display: block; width: 100%; margin: 3px 0; }
+#searchInput { margin-bottom: 10px; }
+.category-child { background-color: #a8dadc; }
+.category-crime { background-color: #f1faee; }
+.category-romance { background-color: #ffe5d9; }
+.category-thriller { background-color: #f8edeb; }
 </style>
 </head>
-<body>
+<body><h1>Book Library</h1><label>Choose category:</label> <select id="categorySelect">
 
-<h1>تطبيق Learn Fast - الكتب</h1>
-
-<input type="text" id="searchInput" placeholder="ابحث عن كتاب هنا...">
-
-<div id="booksContainer"></div>
-
-<script>
-// --- 150 كتاب PDF جاهز ---
+  <option value="all">All</option>
+  <option value="children">Children</option>
+  <option value="crime">Crime</option>
+  <option value="romance">Romance</option>
+  <option value="thriller">Thriller</option>
+</select><input type="text" id="searchInput" placeholder="Search books by title, author or category..."><div id="booksContainer"></div><script>
 const books = [
-  { id: 1, title: "كتاب 1", url: "book1.pdf" },
-  { id: 2, title: "كتاب 2", url: "book2.pdf" },
-  { id: 3, title: "كتاب 3", url: "book3.pdf" },
-  { id: 4, title: "كتاب 4", url: "book4.pdf" },
-  { id: 5, title: "كتاب 5", url: "book5.pdf" },
-  { id: 6, title: "كتاب 6", url: "book6.pdf" },
-  { id: 7, title: "كتاب 7", url: "book7.pdf" },
-  { id: 8, title: "كتاب 8", url: "book8.pdf" },
-  { id: 9, title: "كتاب 9", url: "book9.pdf" },
-  { id: 10, title: "كتاب 10", url: "book10.pdf" },
-  { id: 11, title: "كتاب 11", url: "book11.pdf" },
-  { id: 12, title: "كتاب 12", url: "book12.pdf" },
-  { id: 13, title: "كتاب 13", url: "book13.pdf" },
-  { id: 14, title: "كتاب 14", url: "book14.pdf" },
-  { id: 15, title: "كتاب 15", url: "book15.pdf" },
-  { id: 16, title: "كتاب 16", url: "book16.pdf" },
-  { id: 17, title: "كتاب 17", url: "book17.pdf" },
-  { id: 18, title: "كتاب 18", url: "book18.pdf" },
-  { id: 19, title: "كتاب 19", url: "book19.pdf" },
-  { id: 20, title: "كتاب 20", url: "book20.pdf" },
-  { id: 21, title: "كتاب 21", url: "book21.pdf" },
-  { id: 22, title: "كتاب 22", url: "book22.pdf" },
-  { id: 23, title: "كتاب 23", url: "book23.pdf" },
-  { id: 24, title: "كتاب 24", url: "book24.pdf" },
-  { id: 25, title: "كتاب 25", url: "book25.pdf" },
-  { id: 26, title: "كتاب 26", url: "book26.pdf" },
-  { id: 27, title: "كتاب 27", url: "book27.pdf" },
-  { id: 28, title: "كتاب 28", url: "book28.pdf" },
-  { id: 29, title: "كتاب 29", url: "book29.pdf" },
-  { id: 30, title: "كتاب 30", url: "book30.pdf" },
-  { id: 31, title: "كتاب 31", url: "book31.pdf" },
-  { id: 32, title: "كتاب 32", url: "book32.pdf" },
-  { id: 33, title: "كتاب 33", url: "book33.pdf" },
-  { id: 34, title: "كتاب 34", url: "book34.pdf" },
-  { id: 35, title: "كتاب 35", url: "book35.pdf" },
-  { id: 36, title: "كتاب 36", url: "book36.pdf" },
-  { id: 37, title: "كتاب 37", url: "book37.pdf" },
-  { id: 38, title: "كتاب 38", url: "book38.pdf" },
-  { id: 39, title: "كتاب 39", url: "book39.pdf" },
-  { id: 40, title: "كتاب 40", url: "book40.pdf" },
-  { id: 41, title: "كتاب 41", url: "book41.pdf" },
-  { id: 42, title: "كتاب 42", url: "book42.pdf" },
-  { id: 43, title: "كتاب 43", url: "book43.pdf" },
-  { id: 44, title: "كتاب 44", url: "book44.pdf" },
-  { id: 45, title: "كتاب 45", url: "book45.pdf" },
-  { id: 46, title: "كتاب 46", url: "book46.pdf" },
-  { id: 47, title: "كتاب 47", url: "book47.pdf" },
-  { id: 48, title: "كتاب 48", url: "book48.pdf" },
-  { id: 49, title: "كتاب 49", url: "book49.pdf" },
-  { id: 50, title: "كتاب 50", url: "book50.pdf" },
-  { id: 51, title: "كتاب 51", url: "book51.pdf" },
-  { id: 52, title: "كتاب 52", url: "book52.pdf" },
-  { id: 53, title: "كتاب 53", url: "book53.pdf" },
-  { id: 54, title: "كتاب 54", url: "book54.pdf" },
-  { id: 55, title: "كتاب 55", url: "book55.pdf" },
-  { id: 56, title: "كتاب 56", url: "book56.pdf" },
-  { id: 57, title: "كتاب 57", url: "book57.pdf" },
-  { id: 58, title: "كتاب 58", url: "book58.pdf" },
-  { id: 59, title: "كتاب 59", url: "book59.pdf" },
-  { id: 60, title: "كتاب 60", url: "book60.pdf" },
-  { id: 61, title: "كتاب 61", url: "book61.pdf" },
-  { id: 62, title: "كتاب 62", url: "book62.pdf" },
-  { id: 63, title: "كتاب 63", url: "book63.pdf" },
-  { id: 64, title: "كتاب 64", url: "book64.pdf" },
-  { id: 65, title: "كتاب 65", url: "book65.pdf" },
-  { id: 66, title: "كتاب 66", url: "book66.pdf" },
-  { id: 67, title: "كتاب 67", url: "book67.pdf" },
-  { id: 68, title: "كتاب 68", url: "book68.pdf" },
-  { id: 69, title: "كتاب 69", url: "book69.pdf" },
-  { id: 70, title: "كتاب 70", url: "book70.pdf" },
-  { id: 71, title: "كتاب 71", url: "book71.pdf" },
-  { id: 72, title: "كتاب 72", url: "book72.pdf" },
-  { id: 73, title: "كتاب 73", url: "book73.pdf" },
-  { id: 74, title: "كتاب 74", url: "book74.pdf" },
-  { id: 75, title: "كتاب 75", url: "book75.pdf" },
-  { id: 76, title: "كتاب 76", url: "book76.pdf" },
-  { id: 77, title: "كتاب 77", url: "book77.pdf" },
-  { id: 78, title: "كتاب 78", url: "book78.pdf" },
-  { id: 79, title: "كتاب 79", url: "book79.pdf" },
-  { id: 80, title: "كتاب 80", url: "book80.pdf" },
-  { id: 81, title: "كتاب 81", url: "book81.pdf" },
-  { id: 82, title: "كتاب 82", url: "book82.pdf" },
-  { id: 83, title: "كتاب 83", url: "book83.pdf" },
-  { id: 84, title: "كتاب 84", url: "book84.pdf" },
-  { id: 85, title: "كتاب 85", url: "book85.pdf" },
-  { id: 86, title: "كتاب 86", url: "book86.pdf" },
-  { id: 87, title: "كتاب 87", url: "book87.pdf" },
-  { id: 88, title: "كتاب 88", url: "book88.pdf" },
-  { id: 89, title: "كتاب 89", url: "book89.pdf" },
-  { id: 90, title: "كتاب 90", url: "book90.pdf" },
-  { id: 91, title: "كتاب 91", url: "book91.pdf" },
-  { id: 92, title: "كتاب 92", url: "book92.pdf" },
-  { id: 93, title: "كتاب 93", url: "book93.pdf" },
-  { id: 94, title: "كتاب 94", url: "book94.pdf" },
-  { id: 95, title: "كتاب 95", url: "book95.pdf" },
-  { id: 96, title: "كتاب 96", url: "book96.pdf" },
-  { id: 97, title: "كتاب 97", url: "book97.pdf" },
-  { id: 98, title: "كتاب 98", url: "book98.pdf" },
-  { id: 99, title: "كتاب 99", url: "book99.pdf" },
-  { id: 100, title: "كتاب 100", url: "book100.pdf" },
-  { id: 101, title: "كتاب 101", url: "book101.pdf" },
-  { id: 102, title: "كتاب 102", url: "book102.pdf" },
-  { id: 103, title: "كتاب 103", url: "book103.pdf" },
-  { id: 104, title: "كتاب 104", url: "book104.pdf" },
-  { id: 105, title: "كتاب 105", url: "book105.pdf" },
-  { id: 106, title: "كتاب 106", url: "book106.pdf" },
-  { id: 107, title: "كتاب 107", url: "book107.pdf" },
-  { id: 108, title: "كتاب 108", url: "book108.pdf" },
-  { id: 109, title: "كتاب 109", url: "book109.pdf" },
-  { id: 110, title: "كتاب 110", url: "book110.pdf" },
-  { id: 111, title: "كتاب 111", url: "book111.pdf" },
-  { id: 112, title: "كتاب 112", url: "book112.pdf" },
-  { id: 113, title: "كتاب 113", url: "book113.pdf" },
-  { id: 114, title: "كتاب 114", url: "book114.pdf" },
-  { id: 115, title: "كتاب 115", url: "book115.pdf" },
-  { id: 116, title: "كتاب 116", url: "book116.pdf" },
-  { id: 117, title: "كتاب 117", url: "book117.pdf" },
-  { id: 118, title: "كتاب 118", url: "book118.pdf" },
-  { id: 119, title: "كتاب 119", url: "book119.pdf" },
-  { id: 120, title: "كتاب 120", url: "book120.pdf" },
-  { id: 121, title: "كتاب 121", url: "book121.pdf" },
-  { id: 122, title: "كتاب 122", url: "book122.pdf" },
-  { id: 123, title: "كتاب 123", url: "book123.pdf" },
-  { id: 124, title: "كتاب 124", url: "book124.pdf" },
-  { id: 125, title: "كتاب 125", url: "book125.pdf" },
-  { id: 126, title: "كتاب 126", url: "book126.pdf" },
-  { id: 127, title: "كتاب 127", url: "book127.pdf" },
-  { id: 128, title: "كتاب 128", url: "book128.pdf" },
-  { id: 129, title: "كتاب 129", url: "book129.pdf" },
-  { id: 130, title: "كتاب 130", url: "book130.pdf" },
-  { id: 131, title: "كتاب 131", url: "book131.pdf" },
-  { id: 132, title: "كتاب 132", url: "book132.pdf" },
-  { id: 133, title: "كتاب 133", url: "book133.pdf" },
-  { id: 134, title: "كتاب 134", url: "book134.pdf" },
-  { id: 135, title: "كتاب 135", url: "book135.pdf" },
-  { id: 136, title: "كتاب 136", url: "book136.pdf" },
-  { id: 137, title: "كتاب 137", url: "book137.pdf" },
-  { id: 138, title: "كتاب 138", url: "book138.pdf" },
-  { id: 139, title: "كتاب 139", url: "book139.pdf" },
-  { id: 140, title: "كتاب 140", url: "book140.pdf" },
-  { id: 141, title: "كتاب 141", url: "book141.pdf" },
-  { id: 142, title: "كتاب 142", url: "book142.pdf" },
-  { id: 143, title: "كتاب 143", url: "book143.pdf" },
-  { id: 144, title: "كتاب 144", url: "book144.pdf" },
-  { id: 145, title: "كتاب 145", url: "book145.pdf" },
-  { id: 146, title: "كتاب 146", url: "book146.pdf" },
-  { id: 147, title: "كتاب 147", url: "book147.pdf" },
-  { id: 148, title: "كتاب 148", url: "book148.pdf" },
-  { id: 149, title: "كتاب 149", url: "book149.pdf" },
-  { id: 150, title: "كتاب 150", url: "book150.pdf" }
+// Children books 1-25
+{ id:1, title:"The Little Prince", author:"Antoine de Saint-Exupéry", year:1943, category:"children", url:"https://www.gutenberg.org/ebooks/174" },
+{ id:2, title:"Alice's Adventures in Wonderland", author:"Lewis Carroll", year:1865, category:"children", url:"https://www.gutenberg.org/ebooks/11" },
+{ id:3, title:"Peter Pan", author:"J.M. Barrie", year:1911, category:"children", url:"https://www.gutenberg.org/ebooks/16" },
+{ id:4, title:"Heidi", author:"Johanna Spyri", year:1881, category:"children", url:"https://www.gutenberg.org/ebooks/1448" },
+{ id:5, title:"The Secret Garden", author:"Frances Hodgson Burnett", year:1911, category:"children", url:"https://www.gutenberg.org/ebooks/113" },
+{ id:6, title:"Black Beauty", author:"Anna Sewell", year:1877, category:"children", url:"https://www.gutenberg.org/ebooks/271" },
+{ id:7, title:"The Jungle Book", author:"Rudyard Kipling", year:1894, category:"children", url:"https://www.gutenberg.org/ebooks/236" },
+{ id:8, title:"The Wonderful Wizard of Oz", author:"L. Frank Baum", year:1900, category:"children", url:"https://www.gutenberg.org/ebooks/55" },
+{ id:9, title:"Pinocchio", author:"Carlo Collodi", year:1883, category:"children", url:"https://www.gutenberg.org/ebooks/500" },
+{ id:10, title:"Anne of Green Gables", author:"Lucy Maud Montgomery", year:1908, category:"children", url:"https://www.gutenberg.org/ebooks/45" },
+{ id:11, title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, category:"children", url:"https://www.gutenberg.org/ebooks/120" },
+{ id:12, title:"The Tale of Peter Rabbit", author:"Beatrix Potter", year:1902, category:"children", url:"https://www.gutenberg.org/ebooks/14838" },
+{ id:13, title:"Grimm's Fairy Tales", author:"Brothers Grimm", year:1812, category:"children", url:"https://www.gutenberg.org/ebooks/2591" },
+{ id:14, title:"The Adventures of Tom Sawyer", author:"Mark Twain", year:1876, category:"children", url:"https://www.gutenberg.org/ebooks/74" },
+{ id:15, title:"The Adventures of Huckleberry Finn", author:"Mark Twain", year:1884, category:"children", url:"https://www.gutenberg.org/ebooks/76" },
+{ id:16, title:"A Little Princess", author:"Frances Hodgson Burnett", year:1905, category:"children", url:"https://www.gutenberg.org/ebooks/113" },
+{ id:17, title:"Little Women", author:"Louisa May Alcott", year:1868, category:"children", url:"https://www.gutenberg.org/ebooks/514" },
+{ id:18, title:"Fairy Tales by Hans Christian Andersen", author:"Hans Christian Andersen", year:1835, category:"children", url:"https://www.gutenberg.org/ebooks/27200" },
+{ id:19, title:"Just So Stories", author:"Rudyard Kipling", year:1902, category:"children", url:"https://www.gutenberg.org/ebooks/27879" },
+{ id:20, title:"The Velveteen Rabbit", author:"Margery Williams", year:1922, category:"children", url:"https://www.gutenberg.org/ebooks/11706" },
+{ id:21, title:"The Wind in the Willows", author:"Kenneth Grahame", year:1908, category:"children", url:"https://www.gutenberg.org/ebooks/28962" },
+{ id:22, title:"Pippi Longstocking", author:"Astrid Lindgren", year:1945, category:"children", url:"https://www.gutenberg.org/ebooks/24147" },
+{ id:23, title:"The Borrowers", author:"Mary Norton", year:1952, category:"children", url:"https://www.gutenberg.org/ebooks/18144" },
+{ id:24, title:"The Story of Doctor Dolittle", author:"Hugh Lofting", year:1920, category:"children", url:"https://www.gutenberg.org/ebooks/963" },
+{ id:25, title:"Mary Poppins", author:"P.L. Travers", year:1934, category:"children", url:"https://www.gutenberg.org/ebooks/24147" },
+
+// Crime books 26-50
+{ id:26, title:"The Adventures of Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, category:"crime", url:"https://www.gutenberg.org/ebooks/1661" },
+{ id:27, title:"Dr. Jekyll and Mr. Hyde", author:"Robert Louis Stevenson", year:1886, category:"crime", url:"https://www.gutenberg.org/ebooks/43" },
+{ id:28, title:"The Moonstone", author:"Wilkie Collins", year:1868, category:"crime", url:"https://www.gutenberg.org/ebooks/155" },
+{ id:29, title:"The Mystery of Edwin Drood", author:"Charles Dickens", year:1870, category:"crime", url:"https://www.gutenberg.org/ebooks/564" },
+{ id:30, title:"The Red-Headed League", author:"Arthur Conan Doyle", year:1891, category:"crime", url:"https://www.gutenberg.org/ebooks/1662" },
+{ id:31, title:"The Hound of the Baskervilles", author:"Arthur Conan Doyle", year:1902, category:"crime", url:"https://www.gutenberg.org/ebooks/2852" },
+{ id:32, title:"The Woman in White", author:"Wilkie Collins", year:1859, category:"crime", url:"https://www.gutenberg.org/ebooks/119" },
+{ id:33, title:"The Murders in the Rue Morgue", author:"Edgar Allan Poe", year:1841, category:"crime", url:"https://www.gutenberg.org/ebooks/2148" },
+{ id:34, title:"The Purloined Letter", author:"Edgar Allan Poe", year:1845, category:"crime", url:"https://www.gutenberg.org/ebooks/2250" },
+{ id:35, title:"The Black Cat and Other Stories", author:"Edgar Allan Poe", year:1843, category:"crime", url:"https://www.gutenberg.org/ebooks/1064" },
+{ id:36, title:"The Speckled Band", author:"Arthur Conan Doyle", year:1892, category:"crime", url:"https://www.gutenberg.org/ebooks/834" },
+{ id:37, title:"The Valley of Fear", author:"Arthur Conan Doyle", year:1915, category:"crime", url:"https://www.gutenberg.org/ebooks/3286" },
+{ id:38, title:"The Mystery of Cloomber", author:"J. Sheridan Le Fanu", year:1889, category:"crime", url:"https://www.gutenberg.org/ebooks/14772" },
+{ id:39, title:"The Lodger", author:"Marie Belloc Lowndes", year:1913, category:"crime", url:"https://www.gutenberg.org/ebooks/313" },
+{ id:40, title:"The Dagon and Other Macabre Tales", author:"H.P. Lovecraft", year:1919, category:"crime", url:"https://www.gutenberg.org/ebooks/8490" },
+{ id:41, title:"The Murders at the Rue Morgue", author:"Edgar Allan Poe", year:1841, category:"crime", url:"https://www.gutenberg.org/ebooks/2148" },
+{ id:42, title:"The Gold Bug", author:"Edgar Allan Poe", year:1843, category:"crime", url:"https://www.gutenberg.org/ebooks/2148" },
+{ id:43, title:"The Tell-Tale Heart", author:"Edgar Allan Poe", year:1843, category:"crime", url:"https://www.gutenberg.org/ebooks/2148" },
+{ id:44, title:"The Murders in the Rue Morgue", author:"Edgar Allan Poe", year:1841, category:"crime", url:"https://www.gutenberg.org/ebooks/2148" },
+{ id:45, title:"The Mystery of the Yellow Room", author:"Gaston Leroux", year:1907, category:"crime", url:"https://www.gutenberg.org/ebooks/2283" },
+{ id:46, title:"The Phantom of the Opera", author:"Gaston Leroux", year:1910, category:"crime", url:"https://www.gutenberg.org/ebooks/175" },
+{ id:47, title:"The House by the Churchyard", author:"Joseph Sheridan Le Fanu", year:1863, category:"crime", url:"https://www.gutenberg.org/ebooks/13777" },
+{ id:48, title:"The Strange Case of Dr Jekyll and Mr Hyde", author:"Robert Louis Stevenson", year:1886, category:"crime", url:"https://www.gutenberg.org/ebooks/43" },
+{ id:49, title:"The Lodger", author:"Marie Belloc Lowndes", year:1913, category:"crime", url:"https://www.gutenberg.org/ebooks/313" },
+{ id:50, title:"The Black Cat", author:"Edgar Allan Poe", year:1843, category:"crime", url:"https://www.gutenberg.org/ebooks/1064" }
+];// الكتب من 51 إلى 75: فئة الرعب
+const horrorBooks = [
+{ id:51, title:"The Haunting of Hill House", author:"Shirley Jackson", age:"16+", year:1959, url:"https://www.gutenberg.org/ebooks/345" },
+{ id:52, title:"Dracula", author:"Bram Stoker", age:"16+", year:1897, url:"https://www.gutenberg.org/ebooks/345" },
+{ id:53, title:"Frankenstein", author:"Mary Shelley", age:"16+", year:1818, url:"https://www.gutenberg.org/ebooks/84" },
+{ id:54, title:"The Turn of the Screw", author:"Henry James", age:"16+", year:1898, url:"https://www.gutenberg.org/ebooks/209" },
+{ id:55, title:"The Strange Case of Dr Jekyll and Mr Hyde", author:"Robert Louis Stevenson", age:"16+", year:1886, url:"https://www.gutenberg.org/ebooks/43" },
+{ id:56, title:"Carmilla", author:"J. Sheridan Le Fanu", age:"16+", year:1872, url:"https://www.gutenberg.org/ebooks/10007" },
+{ id:57, title:"The Call of Cthulhu", author:"H.P. Lovecraft", age:"16+", year:1928, url:"https://www.gutenberg.org/ebooks/14725" },
+{ id:58, title:"The Monkey's Paw", author:"W.W. Jacobs", age:"16+", year:1902, url:"https://www.gutenberg.org/ebooks/12131" },
+{ id:59, title:"The Picture of Dorian Gray", author:"Oscar Wilde", age:"16+", year:1890, url:"https://www.gutenberg.org/ebooks/174" },
+{ id:60, title:"The Legend of Sleepy Hollow", author:"Washington Irving", age:"16+", year:1820, url:"https://www.gutenberg.org/ebooks/41" },
+{ id:61, title:"The House on the Borderland", author:"William Hope Hodgson", age:"16+", year:1908, url:"https://www.gutenberg.org/ebooks/20240" },
+{ id:62, title:"The Willows", author:"Algernon Blackwood", age:"16+", year:1907, url:"https://www.gutenberg.org/ebooks/20239" },
+{ id:63, title:"Green Tea", author:"J. Sheridan Le Fanu", age:"16+", year:1869, url:"https://www.gutenberg.org/ebooks/10005" },
+{ id:64, title:"The Phantom of the Opera", author:"Gaston Leroux", age:"16+", year:1910, url:"https://www.gutenberg.org/ebooks/175" },
+{ id:65, title:"The Island of Doctor Moreau", author:"H.G. Wells", age:"16+", year:1896, url:"https://www.gutenberg.org/ebooks/159" },
+{ id:66, title:"The Vampyre", author:"John Polidori", age:"16+", year:1819, url:"https://www.gutenberg.org/ebooks/12105" },
+{ id:67, title:"Ghost Stories of an Antiquary", author:"M.R. James", age:"16+", year:1904, url:"https://www.gutenberg.org/ebooks/105" },
+{ id:68, title:"The Beetle", author:"Richard Marsh", age:"16+", year:1897, url:"https://www.gutenberg.org/ebooks/20223" },
+{ id:69, title:"Hell House", author:"Richard Matheson", age:"16+", year:1971, url:"https://archive.org/details/hellhouse1971" },
+{ id:70, title:"House of Leaves", author:"Mark Z. Danielewski", age:"18+", year:2000, url:"https://archive.org/details/houseofleaves" },
+{ id:71, title:"Something Wicked This Way Comes", author:"Ray Bradbury", age:"14+", year:1962, url:"https://archive.org/details/somethingwicked" },
+{ id:72, title:"Pet Sematary", author:"Stephen King", age:"18+", year:1983, url:"https://archive.org/details/petsematary" },
+{ id:73, title:"Carrie", author:"Stephen King", age:"16+", year:1974, url:"https://archive.org/details/carrie" },
+{ id:74, title:"Salem's Lot", author:"Stephen King", age:"16+", year:1975, url:"https://archive.org/details/salems-lot" },
+{ id:75, title:"Misery", author:"Stephen King", age:"18+", year:1987, url:"https://archive.org/details/misery" }
 ];
 
-// عرض الكتب في الصفحة
-function showBooks(filteredBooks = books) {
-    const container = document.getElementById('booksContainer');
-    container.innerHTML = '';
-    filteredBooks.forEach(b => {
-        const btn = document.createElement('button');
-        btn.innerText = b.id + ". " + b.title;
-        btn.onclick = () => window.open(b.url, "_blank"); // يفتح الكتاب مباشرة
-        container.appendChild(btn);
-    });
+// الكتب من 76 إلى 100: فئة الروايات/الحب
+const romanceBooks = [
+{ id:76, title:"Pride and Prejudice", author:"Jane Austen", age:"14+", year:1813, url:"https://www.gutenberg.org/ebooks/1342" },
+{ id:77, title:"Jane Eyre", author:"Charlotte Brontë", age:"14+", year:1847, url:"https://www.gutenberg.org/ebooks/1260" },
+{ id:78, title:"Wuthering Heights", author:"Emily Brontë", age:"14+", year:1847, url:"https://www.gutenberg.org/ebooks/768" },
+{ id:79, title:"Sense and Sensibility", author:"Jane Austen", age:"14+", year:1811, url:"https://www.gutenberg.org/ebooks/161" },
+{ id:80, title:"Emma", author:"Jane Austen", age:"14+", year:1815, url:"https://www.gutenberg.org/ebooks/158" },
+{ id:81, title:"North and South", author:"Elizabeth Gaskell", age:"14+", year:1854, url:"https://www.gutenberg.org/ebooks/14969" },
+{ id:82, title:"Persuasion", author:"Jane Austen", age:"14+", year:1817, url:"https://www.gutenberg.org/ebooks/105" },
+{ id:83, title:"The Age of Innocence", author:"Edith Wharton", age:"14+", year:1920, url:"https://www.gutenberg.org/ebooks/541" },
+{ id:84, title:"Madame Bovary", author:"Gustave Flaubert", age:"16+", year:1856, url:"https://www.gutenberg.org/ebooks/2412" },
+{ id:85, title:"Anna Karenina", author:"Leo Tolstoy", age:"16+", year:1877, url:"https://www.gutenberg.org/ebooks/1399" },
+{ id:86, title:"Doctor Zhivago", author:"Boris Pasternak", age:"16+", year:1957, url:"https://archive.org/details/doctor-zhivago" },
+{ id:87, title:"The Great Gatsby", author:"F. Scott Fitzgerald", age:"14+", year:1925, url:"https://www.gutenberg.org/ebooks/64317" },
+{ id:88, title:"A Room with a View", author:"E.M. Forster", age:"14+", year:1908, url:"https://www.gutenberg.org/ebooks/162" },
+{ id:89, title:"Tess of the d'Urbervilles", author:"Thomas Hardy", age:"14+", year:1891, url:"https://www.gutenberg.org/ebooks/110" },
+{ id:90, title:"Little Women", author:"Louisa May Alcott", age:"14+", year:1868, url:"https://www.gutenberg.org/ebooks/514" },
+{ id:91, title:"Gone with the Wind", author:"Margaret Mitchell", age:"14+", year:1936, url:"https://archive.org/details/gonewiththewind" },
+{ id:92, title:"Rebecca", author:"Daphne du Maurier", age:"14+", year:1938, url:"https://archive.org/details/rebecca1938" },
+{ id:93, title:"The Notebook", author:"Nicholas Sparks", age:"14+", year:1996, url:"https://archive.org/details/thenotebook1996" },
+{ id:94, title:"Me Before You", author:"Jojo Moyes", age:"14+", year:2012, url:"https://archive.org/details/me-before-you" },
+{ id:95, title:"Outlander", author:"Diana Gabaldon", age:"16+", year:1991, url:"https://archive.org/details/outlander1991" },
+{ id:96, title:"The Time Traveler's Wife", author:"Audrey Niffenegger", age:"16+", year:2003, url:"https://archive.org/details/thetimetravelerswife" },
+{ id:97, title:"Twilight", author:"Stephenie Meyer", age:"14+", year:2005, url:"https://archive.org/details/twilight2005" },
+{ id:98, title:"Eleanor & Park", author:"Rainbow Rowell", age:"14+", year:2012, url:"https://archive.org/details/eleanorandpark" },
+{ id:99, title:"The Fault in Our Stars", author:"John Green", age:"14+", year:2012, url:"https://archive.org/details/thefaultinourstars" },
+{ id:100, title:"The Rosie Project", author:"Graeme Simsion", age:"14+", year:2013, url:"https://archive.org/details/therosieproject" }
+];// الكتب من 101 إلى 150: فئات جديدة
+const moreBooks = [
+  // فئة الجريمة (101-110)
+  { id:101, title:"Murder on the Orient Express", author:"Agatha Christie", age:"14+", year:1934, url:"https://www.gutenberg.org/ebooks/12345" },
+  { id:102, title:"And Then There Were None", author:"Agatha Christie", age:"14+", year:1939, url:"https://www.gutenberg.org/ebooks/12346" },
+  { id:103, title:"The Hound of the Baskervilles", author:"Arthur Conan Doyle", age:"14+", year:1902, url:"https://www.gutenberg.org/ebooks/2852" },
+  { id:104, title:"The Maltese Falcon", author:"Dashiell Hammett", age:"16+", year:1930, url:"https://archive.org/details/the-maltese-falcon" },
+  { id:105, title:"The Big Sleep", author:"Raymond Chandler", age:"16+", year:1939, url:"https://archive.org/details/the-big-sleep" },
+  { id:106, title:"Sherlock Holmes: A Study in Scarlet", author:"Arthur Conan Doyle", age:"14+", year:1887, url:"https://www.gutenberg.org/ebooks/244" },
+  { id:107, title:"The ABC Murders", author:"Agatha Christie", age:"14+", year:1936, url:"https://www.gutenberg.org/ebooks/12347" },
+  { id:108, title:"The Woman in White", author:"Wilkie Collins", age:"14+", year:1859, url:"https://www.gutenberg.org/ebooks/583" },
+  { id:109, title:"The Thirty-Nine Steps", author:"John Buchan", age:"14+", year:1915, url:"https://www.gutenberg.org/ebooks/330" },
+  { id:110, title:"Inspector Maigret: Pietr the Latvian", author:"Georges Simenon", age:"14+", year:1931, url:"https://archive.org/details/pietr-the-latvian" },
+
+  // فئة التشويق (111-120)
+  { id:111, title:"The Da Vinci Code", author:"Dan Brown", age:"16+", year:2003, url:"https://archive.org/details/the-da-vinci-code" },
+  { id:112, title:"Angels & Demons", author:"Dan Brown", age:"16+", year:2000, url:"https://archive.org/details/angels-and-demons" },
+  { id:113, title:"Inferno", author:"Dan Brown", age:"16+", year:2013, url:"https://archive.org/details/inferno-dan-brown" },
+  { id:114, title:"The Girl with the Dragon Tattoo", author:"Stieg Larsson", age:"16+", year:2005, url:"https://archive.org/details/the-girl-with-the-dragon-tattoo" },
+  { id:115, title:"The Girl Who Played with Fire", author:"Stieg Larsson", age:"16+", year:2006, url:"https://archive.org/details/the-girl-who-played-with-fire" },
+  { id:116, title:"The Girl Who Kicked the Hornet's Nest", author:"Stieg Larsson", age:"16+", year:2007, url:"https://archive.org/details/the-girl-who-kicked-the-hornets-nest" },
+  { id:117, title:"Gone Girl", author:"Gillian Flynn", age:"16+", year:2012, url:"https://archive.org/details/gone-girl" },
+  { id:118, title:"Sharp Objects", author:"Gillian Flynn", age:"16+", year:2006, url:"https://archive.org/details/sharp-objects" },
+  { id:119, title:"Dark Places", author:"Gillian Flynn", age:"16+", year:2009, url:"https://archive.org/details/dark-places" },
+  { id:120, title:"Before I Go to Sleep", author:"S.J. Watson", age:"16+", year:2011, url:"https://archive.org/details/before-i-go-to-sleep" },
+
+  // فئة الأطفال (121-130)
+  { id:121, title:"Alice's Adventures in Wonderland", author:"Lewis Carroll", age:"8+", year:1865, url:"https://www.gutenberg.org/ebooks/11" },
+  { id:122, title:"Through the Looking-Glass", author:"Lewis Carroll", age:"8+", year:1871, url:"https://www.gutenberg.org/ebooks/12" },
+  { id:123, title:"Peter Pan", author:"J.M. Barrie", age:"8+", year:1911, url:"https://www.gutenberg.org/ebooks/16" },
+  { id:124, title:"The Wonderful Wizard of Oz", author:"L. Frank Baum", age:"8+", year:1900, url:"https://www.gutenberg.org/ebooks/55" },
+  { id:125, title:"The Secret Garden", author:"Frances Hodgson Burnett", age:"8+", year:1911, url:"https://www.gutenberg.org/ebooks/17396" },
+  { id:126, title:"Black Beauty", author:"Anna Sewell", age:"8+", year:1877, url:"https://www.gutenberg.org/ebooks/271" },
+  { id:127, title:"Heidi", author:"Johanna Spyri", age:"8+", year:1881, url:"https://www.gutenberg.org/ebooks/1448" },
+  { id:128, title:"The Adventures of Tom Sawyer", author:"Mark Twain", age:"10+", year:1876, url:"https://www.gutenberg.org/ebooks/74" },
+  { id:129, title:"The Adventures of Huckleberry Finn", author:"Mark Twain", age:"10+", year:1884, url:"https://www.gutenberg.org/ebooks/76" },
+  { id:130, title:"The Wind in the Willows", author:"Kenneth Grahame", age:"8+", year:1908, url:"https://www.gutenberg.org/ebooks/289" },
+
+  // فئة الخيال العلمي (131-140)
+  { id:131, title:"1984", author:"George Orwell", age:"14+", year:1949, url:"https://www.gutenberg.org/ebooks/13481" },
+  { id:132, title:"Brave New World", author:"Aldous Huxley", age:"14+", year:1932, url:"https://www.gutenberg.org/ebooks/101" },
+  { id:133, title:"Fahrenheit 451", author:"Ray Bradbury", age:"14+", year:1953, url:"https://archive.org/details/fahrenheit-451" },
+  { id:134, title:"The War of the Worlds", author:"H.G. Wells", age:"14+", year:1898, url:"https://www.gutenberg.org/ebooks/36" },
+  { id:135, title:"The Time Machine", author:"H.G. Wells", age:"14+", year:1895, url:"https://www.gutenberg.org/ebooks/35" },
+  { id:136, title:"The Invisible Man", author:"H.G. Wells", age:"14+", year:1897, url:"https://www.gutenberg.org/ebooks/5230" },
+  { id:137, title:"Journey to the Center of the Earth", author:"Jules Verne", age:"10+", year:1864, url:"https://www.gutenberg.org/ebooks/18857" },
+  { id:138, title:"Twenty Thousand Leagues Under the Sea", author:"Jules Verne", age:"10+", year:1870, url:"https://www.gutenberg.org/ebooks/164" },
+  { id:139, title:"Around the World in Eighty Days", author:"Jules Verne", age:"10+", year:1873, url:"https://www.gutenberg.org/ebooks/103" },
+  { id:140, title:"The Martian Chronicles", author:"Ray Bradbury", age:"14+", year:1950, url:"https://archive.org/details/the-martian-chronicles" },
+
+  // فئة التاريخ (141-150)
+  { id:141, title:"The History of the Decline and Fall of the Roman Empire", author:"Edward Gibbon", age:"16+", year:1776, url:"https://www.gutenberg.org/ebooks/25717" },
+  { id:142, title:"The Prince", author:"Niccolò Machiavelli", age:"16+", year:1532, url:"https://www.gutenberg.org/ebooks/1232" },
+  { id:143, title:"The Art of War", author:"Sun Tzu", age:"16+", year:-500, url:"https://www.gutenberg.org/ebooks/132" },
+  { id:144, title:"Democracy in America", author:"Alexis de Tocqueville", age:"16+", year:1835, url:"https://www.gutenberg.org/ebooks/815" },
+  { id:145, title:"The Communist Manifesto", author:"Karl Marx & Friedrich Engels", age:"16+", year:1848, url:"https://www.gutenberg.org/ebooks/61" },
+  { id:146, title:"A Short History of the World", author:"H.G. Wells", age:"14+", year:1922, url:"https://archive.org/details/short-history-world" },
+  { id:147, title:"Guns, Germs, and Steel", author:"Jared Diamond", age:"16+", year:1997, url:"https://archive.org/details/guns-germs-steel" },
+  { id:148, title:"Sapiens: A Brief History of Humankind", author:"Yuval Noah Harari", age:"16+", year:2011, url:"https://archive.org/details/sapiens-brief-history" },
+  { id:149, title:"A People's History of the United States", author:"Howard Zinn", age:"16+", year:1980, url:"https://archive.org/details/a-peoples-history" },
+  { id:150, title:"The Silk Roads", author:"Peter Frankopan", age:"16+", year:2015, url:"https://archive.org/details/the-silk-roads" }
+];// الكتب من 151 إلى 200: فئات جديدة
+const evenMoreBooks = [
+  // فئة الروايات الرومانسية (151-160)
+  { id:151, title:"Pride and Prejudice", author:"Jane Austen", age:"14+", year:1813, url:"https://www.gutenberg.org/ebooks/1342" },
+  { id:152, title:"Sense and Sensibility", author:"Jane Austen", age:"14+", year:1811, url:"https://www.gutenberg.org/ebooks/161" },
+  { id:153, title:"Emma", author:"Jane Austen", age:"14+", year:1815, url:"https://www.gutenberg.org/ebooks/158" },
+  { id:154, title:"Persuasion", author:"Jane Austen", age:"14+", year:1817, url:"https://www.gutenberg.org/ebooks/105" },
+  { id:155, title:"North and South", author:"Elizabeth Gaskell", age:"14+", year:1854, url:"https://www.gutenberg.org/ebooks/409" },
+  { id:156, title:"Jane Eyre", author:"Charlotte Brontë", age:"14+", year:1847, url:"https://www.gutenberg.org/ebooks/1260" },
+  { id:157, title:"Wuthering Heights", author:"Emily Brontë", age:"14+", year:1847, url:"https://www.gutenberg.org/ebooks/768" },
+  { id:158, title:"Anna Karenina", author:"Leo Tolstoy", age:"16+", year:1877, url:"https://www.gutenberg.org/ebooks/1399" },
+  { id:159, title:"Madame Bovary", author:"Gustave Flaubert", age:"16+", year:1856, url:"https://www.gutenberg.org/ebooks/2413" },
+  { id:160, title:"The Age of Innocence", author:"Edith Wharton", age:"16+", year:1920, url:"https://www.gutenberg.org/ebooks/541" },
+
+  // فئة الرعب (161-170)
+  { id:161, title:"Dracula", author:"Bram Stoker", age:"16+", year:1897, url:"https://www.gutenberg.org/ebooks/345" },
+  { id:162, title:"Frankenstein", author:"Mary Shelley", age:"16+", year:1818, url:"https://www.gutenberg.org/ebooks/84" },
+  { id:163, title:"The Strange Case of Dr Jekyll and Mr Hyde", author:"Robert Louis Stevenson", age:"16+", year:1886, url:"https://www.gutenberg.org/ebooks/43" },
+  { id:164, title:"The Turn of the Screw", author:"Henry James", age:"16+", year:1898, url:"https://www.gutenberg.org/ebooks/209" },
+  { id:165, title:"Carmilla", author:"Joseph Sheridan Le Fanu", age:"16+", year:1872, url:"https://www.gutenberg.org/ebooks/10007" },
+  { id:166, title:"The Picture of Dorian Gray", author:"Oscar Wilde", age:"16+", year:1890, url:"https://www.gutenberg.org/ebooks/174" },
+  { id:167, title:"The Legend of Sleepy Hollow", author:"Washington Irving", age:"14+", year:1820, url:"https://www.gutenberg.org/ebooks/41" },
+  { id:168, title:"The Call of Cthulhu", author:"H.P. Lovecraft", age:"16+", year:1928, url:"https://www.gutenberg.org/ebooks/44885" },
+  { id:169, title:"At the Mountains of Madness", author:"H.P. Lovecraft", age:"16+", year:1936, url:"https://www.gutenberg.org/ebooks/46089" },
+  { id:170, title:"The Dunwich Horror", author:"H.P. Lovecraft", age:"16+", year:1929, url:"https://www.gutenberg.org/ebooks/42289" },
+
+  // فئة الفلسفة (171-180)
+  { id:171, title:"Thus Spoke Zarathustra", author:"Friedrich Nietzsche", age:"16+", year:1883, url:"https://www.gutenberg.org/ebooks/1998" },
+  { id:172, title:"Beyond Good and Evil", author:"Friedrich Nietzsche", age:"16+", year:1886, url:"https://www.gutenberg.org/ebooks/4363" },
+  { id:173, title:"Meditations", author:"Marcus Aurelius", age:"16+", year:180, url:"https://www.gutenberg.org/ebooks/2680" },
+  { id:174, title:"The Republic", author:"Plato", age:"16+", year:-380, url:"https://www.gutenberg.org/ebooks/150" },
+  { id:175, title:"Nicomachean Ethics", author:"Aristotle", age:"16+", year:-340, url:"https://archive.org/details/nicomacheanethics" },
+  { id:176, title:"Critique of Pure Reason", author:"Immanuel Kant", age:"16+", year:1781, url:"https://www.gutenberg.org/ebooks/4280" },
+  { id:177, title:"Leviathan", author:"Thomas Hobbes", age:"16+", year:1651, url:"https://www.gutenberg.org/ebooks/3207" },
+  { id:178, title:"The Social Contract", author:"Jean-Jacques Rousseau", age:"16+", year:1762, url:"https://www.gutenberg.org/ebooks/46333" },
+  { id:179, title:"Discourse on the Method", author:"René Descartes", age:"16+", year:1637, url:"https://www.gutenberg.org/ebooks/59" },
+  { id:180, title:"The Prince", author:"Niccolò Machiavelli", age:"16+", year:1532, url:"https://www.gutenberg.org/ebooks/1232" },
+
+  // فئة المغامرات (181-190)
+  { id:181, title:"Treasure Island", author:"Robert Louis Stevenson", age:"10+", year:1883, url:"https://www.gutenberg.org/ebooks/120" },
+  { id:182, title:"The Call of the Wild", author:"Jack London", age:"10+", year:1903, url:"https://www.gutenberg.org/ebooks/215" },
+  { id:183, title:"White Fang", author:"Jack London", age:"10+", year:1906, url:"https://www.gutenberg.org/ebooks/910" },
+  { id:184, title:"King Solomon's Mines", author:"H. Rider Haggard", age:"10+", year:1885, url:"https://www.gutenberg.org/ebooks/120" },
+  { id:185, title:"She", author:"H. Rider Haggard", age:"10+", year:1887, url:"https://www.gutenberg.org/ebooks/14600" },
+  { id:186, title:"Around the World in 80 Days", author:"Jules Verne", age:"10+", year:1873, url:"https://www.gutenberg.org/ebooks/103" },
+  { id:187, title:"Journey to the Center of the Earth", author:"Jules Verne", age:"10+", year:1864, url:"https://www.gutenberg.org/ebooks/18857" },
+  { id:188, title:"Twenty Thousand Leagues Under the Sea", author:"Jules Verne", age:"10+", year:1870, url:"https://www.gutenberg.org/ebooks/164" },
+  { id:189, title:"Robinson Crusoe", author:"Daniel Defoe", age:"10+", year:1719, url:"https://www.gutenberg.org/ebooks/521" },
+  { id:190, title:"Gulliver's Travels", author:"Jonathan Swift", age:"10+", year:1726, url:"https://www.gutenberg.org/ebooks/829" },
+
+  // فئة العلوم (191-200)
+  { id:191, title:"A Brief History of Time", author:"Stephen Hawking", age:"14+", year:1988, url:"https://archive.org/details/brief-history-of-time" },
+  { id:192, title:"Cosmos", author:"Carl Sagan", age:"14+", year:1980, url:"https://archive.org/details/cosmos" },
+  { id:193, title:"The Selfish Gene", author:"Richard Dawkins", age:"14+", year:1976, url:"https://archive.org/details/selfish-gene" },
+  { id:194, title:"On the Origin of Species", author:"Charles Darwin", age:"14+", year:1859, url:"https://www.gutenberg.org/ebooks/1228" },
+  { id:195, title:"Silent Spring", author:"Rachel Carson", age:"14+", year:1962, url:"https://archive.org/details/silent-spring" },
+  { id:196, title:"The Double Helix", author:"James D. Watson", age:"14+", year:1968, url:"https://archive.org/details/the-double-helix" },
+  { id:197, title:"The Structure of Scientific Revolutions", author:"Thomas S. Kuhn", age:"14+", year:1962, url:"https://archive.org/details/structure-of-scientific-revolutions" },
+  { id:198, title:"Physics for the Inquiring Mind", author:"Eric M. Rogers", age:"14+", year:1960, url:"https://archive.org/details/physics-for-the-inquiring-mind" },
+  { id:199, title:"The Elegant Universe", author:"Brian Greene", age:"14+", year:1999, url:"https://archive.org/details/the-elegant-universe" },
+  { id:200, title:"Guns, Germs, and Steel", author:"Jared Diamond", age:"16+", year:1997, url:"https://archive.org/details/guns-germs-steel" }
+];
+
+// دمج الـ50 كتاب الجديدة مع المجموعة الرئيسية
+books.push(...evenMoreBooks);
+
+// إعادة عرض كل الكتب
+showBooks();
+
+// دمج الـ50 كتاب الجديدة مع المجموعة الرئيسية
+books.push(...moreBooks);
+
+// إعادة عرض كل الكتب
+showBooks();
+
+// دمج الكتب مع الكتب السابقة
+books.push(...horrorBooks, ...romanceBooks);
+
+// إعادة عرض كل الكتب
+showBooks();
+
+const container = document.getElementById('booksContainer');
+const categorySelect = document.getElementById('categorySelect');
+const searchInput = document.getElementById('searchInput');
+
+function displayBooks(list) {
+  container.innerHTML = '';
+  list.forEach(book => {
+    const btn = document.createElement('button');
+    btn.innerText = `${book.id}. ${book.title} by ${book.author} (${book.year}) [${book.category}]`;
+    btn.className = `category-${book.category}`;
+    btn.onclick = () => window.open(book.url, '_blank');
+    container.appendChild(btn);
+  });
 }
 
-// البحث في الكتب
-document.getElementById('searchInput').addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
-    const filtered = books.filter(b => b.title.toLowerCase().includes(term));
-    showBooks(filtered);
-});
+function filterBooks() {
+  const cat = categorySelect.value;
+  const query = searchInput.value.toLowerCase();
+  let filtered = books;
+  if(cat !== 'all') filtered = filtered.filter(b => b.category === cat);
+  if(query) filtered = filtered.filter(b => b.title.toLowerCase().includes(query) || b.author.toLowerCase().includes(query) || b.category.toLowerCase().includes(query));
+  displayBooks(filtered);
+}
 
-// عرض جميع الكتب عند فتح الصفحة
-showBooks();
-</script>
+categorySelect.addEventListener('change', filterBooks);
+searchInput.addEventListener('input', filterBooks);
 
-</body>
-</html>
+// Show books on load
+displayBooks(books);
+</script></body>
+                                                                                                                                         </html>
