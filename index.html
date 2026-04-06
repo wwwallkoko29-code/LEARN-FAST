@@ -3,74 +3,125 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book Library 200+</title>
+<title>Ultimate Colorful Book Library</title>
 <style>
-body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 10px; }
-h1 { text-align: center; }
-input { width: 100%; padding: 10px; margin-bottom: 10px; }
-a.book { display: block; padding: 10px; margin: 4px 0; background: white; text-decoration: none; color: black; border-radius: 5px; }
+body { font-family: Arial, sans-serif; padding: 10px; background: #f0f0f0; }
+h1 { text-align: center; color: #2c3e50; }
+input { width: 100%; padding: 8px; margin-bottom: 10px; }
+.category-btn { padding: 8px 12px; margin: 2px; cursor: pointer; border: none; border-radius: 5px; }
+#booksContainer button { display: block; width: 100%; margin: 3px 0; padding: 8px; border: none; border-radius: 5px; cursor: pointer; text-align: left; color: #fff; transition: 0.2s; }
+#booksContainer button:hover { opacity: 0.8; }
 </style>
 </head>
 <body>
 
-<h1>Book Library 200 Real Books</h1>
-<input type="text" id="searchInput" placeholder="Search books...">
-<div id="booksContainer"></div>
+<h1>Ultimate Colorful Book Library</h1>
+
+<input type="text" id="searchInput" placeholder="Search books by title, author, or subject...">
+
+<div id="categories">
+  <button class="category-btn" data-category="all">All</button>
+  <button class="category-btn" data-category="children">Children</button>
+  <button class="category-btn" data-category="crime">Crime</button>
+  <button class="category-btn" data-category="romance">Romance</button>
+  <button class="category-btn" data-category="thriller">Thriller</button>
+  <button class="category-btn" data-category="horror">Horror</button>
+  <button class="category-btn" data-category="science fiction">Sci-Fi</button>
+</div>
+
+<div id="booksContainer">Loading books...</div>
 
 <script>
-let books = [];
+const booksContainer = document.getElementById("booksContainer");
+const searchInput = document.getElementById("searchInput");
+let allBooks = [];
+let filteredBooks = [];
 
-// Function to load books from Gutendex pages until we have 200
-async function loadBooks() {
+// Define colors for each category
+const categoryColors = {
+  "children": "#ff6f61",
+  "crime": "#6b5b95",
+  "romance": "#ffb347",
+  "thriller": "#2a9d8f",
+  "horror": "#d62828",
+  "science fiction": "#264653",
+  "general": "#8d99ae"
+};
+
+// -------------------- Fetch Books --------------------
+async function fetchAllBooks(maxBooks = 500) {
   let page = 1;
-  const container = document.getElementById("booksContainer");
+  let books = [];
+  let uniqueBooks = new Set();
 
-  while (books.length < 200) {
+  while (books.length < maxBooks) {
     const response = await fetch(`https://gutendex.com/books/?page=${page}`);
     const data = await response.json();
-    books.push(...data.results);
-    page++;
+    data.results.forEach(book => {
+      if (!uniqueBooks.has(book.id)) {
+        uniqueBooks.add(book.id);
+        books.push({
+          id: book.id,
+          title: book.title,
+          author: book.authors.map(a => a.name).join(", ") || "Unknown",
+          year: book.download_count,
+          category: book.subjects[0] ? book.subjects[0].toLowerCase() : "general",
+          url: book.formats["text/html; charset=utf-8"] || book.formats["text/plain"] || "#"
+        });
+      }
+    });
     if (!data.next) break;
+    page++;
   }
 
-  books = books.slice(0, 200); // Ensure exactly 200
-  displayBooks(books);
+  return books.slice(0, maxBooks);
 }
 
-// Display books
-function displayBooks(list) {
-  const container = document.getElementById("booksContainer");
-  container.innerHTML = "";
-  list.forEach(book => {
-    const link = document.createElement("a");
-    link.className = "book";
-    link.target = "_blank";
-
-    const title = book.title;
-    const author = book.authors.length ? book.authors[0].name : "Unknown";
-    const year = book.release_date ? book.release_date.split("-")[0] : "";
-    const url = book.formats["text/html"] || book.formats["application/pdf"] || book.formats["text/plain"];
-
-    link.href = url;
-    link.innerText = `${title} — ${author} (${year})`;
-
-    container.appendChild(link);
+// -------------------- Display Books --------------------
+function displayBooks(books) {
+  booksContainer.innerHTML = "";
+  if(books.length === 0) {
+    booksContainer.innerHTML = "<p>No books found.</p>";
+    return;
+  }
+  books.forEach(book => {
+    const btn = document.createElement("button");
+    const color = categoryColors[book.category] || "#8d99ae";
+    btn.style.backgroundColor = color;
+    btn.innerHTML = `<strong>${book.title}</strong> by ${book.author}`;
+    btn.onclick = () => window.open(book.url, "_blank");
+    booksContainer.appendChild(btn);
   });
 }
 
-// Search feature
-document.getElementById("searchInput").addEventListener("input", function() {
+// -------------------- Search --------------------
+searchInput.addEventListener("input", function() {
   const query = this.value.toLowerCase();
-  const filtered = books.filter(book => 
-    book.title.toLowerCase().includes(query) ||
-    book.authors.some(a => a.name.toLowerCase().includes(query))
+  filteredBooks = allBooks.filter(b =>
+    b.title.toLowerCase().includes(query) ||
+    b.author.toLowerCase().includes(query) ||
+    b.category.toLowerCase().includes(query)
   );
-  displayBooks(filtered);
+  displayBooks(filteredBooks);
 });
 
-// Initial load
-loadBooks();
-</script>
+// -------------------- Category Filter --------------------
+document.querySelectorAll(".category-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const category = btn.dataset.category.toLowerCase();
+    document.querySelectorAll(".category-btn").forEach(b => b.style.opacity="1");
+    btn.style.opacity="0.6"; // highlight selected
+    if(category === "all") displayBooks(allBooks);
+    else displayBooks(allBooks.filter(b => b.category.includes(category)));
+  });
+});
 
+// -------------------- Initialize --------------------
+(async function init() {
+  allBooks = await fetchAllBooks(500); // Fetch up to 500 unique books
+  filteredBooks = allBooks;
+  displayBooks(allBooks);
+})();
+</script>
 </body>
 </html>
