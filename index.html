@@ -5,21 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learn Fast</title>
 <style>
-body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 10px; }
+body { font-family: Arial, sans-serif; padding: 10px; background: #f0f0f0; }
 h1 { text-align: center; color: #2c3e50; }
-#booksContainer button { display: block; width: 100%; margin: 5px 0; padding: 10px; border: none; border-radius: 5px; background: #3498db; color: #fff; font-size: 16px; cursor: pointer; }
-#booksContainer button:hover { background: #2980b9; }
+select, button, textarea { margin: 5px 0; width: 100%; padding: 8px; }
+#booksContainer button { display: block; width: 100%; margin: 3px 0; }
 #aiOutput { margin-top: 10px; background: #fff; padding: 10px; border-radius: 5px; min-height: 50px; }
-textarea, button { width: 100%; padding: 8px; margin: 5px 0; border-radius: 5px; }
-button#askAI { background: #27ae60; color: #fff; border: none; cursor: pointer; }
-button#askAI:hover { background: #1e8449; }
 </style>
 </head>
 <body>
 
-<h1>Learn Fast</h1>
+<h1>تطبيق Learn Fast</h1>
 
-<h2>الكتب والقصص المتاحة:</h2>
+<label>اختر اللغة:</label>
+<select id="language">
+  <option value="ar">العربية</option>
+  <option value="ku">السورانية</option>
+</select>
+
+<h2>الكتب المتاحة:</h2>
 <div id="booksContainer"></div>
 
 <h2>استشارات AI:</h2>
@@ -27,6 +30,202 @@ button#askAI:hover { background: #1e8449; }
 <button id="askAI">اسأل AI</button>
 <div id="aiOutput"></div>
 
-<script src="script.js"></script>
+<script>
+// الكتب من 1 إلى 50 (الدفعة الأولى)
+const books = [
+{ id:1, title:"كتاب 1", url:"https://example.com/book1" },
+{ id:2, title:"كتاب 2", url:"https://example.com/book2" },
+{ id:3, title:"كتاب 3", url:"https://example.com/book3" },
+{ id:4, title:"كتاب 4", url:"https://example.com/book4" },
+{ id:5, title:"كتاب 5", url:"https://example.com/book5" },
+{ id:6, title:"كتاب 6", url:"https://example.com/book6" },
+{ id:7, title:"كتاب 7", url:"https://example.com/book7" },
+{ id:8, title:"كتاب 8", url:"https://example.com/book8" },
+{ id:9, title:"كتاب 9", url:"https://example.com/book9" },
+{ id:10, title:"كتاب 10", url:"https://example.com/book10" },
+{ id:11, title:"كتاب 11", url:"https://example.com/book11" },
+{ id:12, title:"كتاب 12", url:"https://example.com/book12" },
+{ id:13, title:"كتاب 13", url:"https://example.com/book13" },
+{ id:14, title:"كتاب 14", url:"https://example.com/book14" },
+{ id:15, title:"كتاب 15", url:"https://example.com/book15" },
+{ id:16, title:"كتاب 16", url:"https://example.com/book16" },
+{ id:17, title:"كتاب 17", url:"https://example.com/book17" },
+{ id:18, title:"كتاب 18", url:"https://example.com/book18" },
+{ id:19, title:"كتاب 19", url:"https://example.com/book19" },
+{ id:20, title:"كتاب 20", url:"https://example.com/book20" },
+{ id:21, title:"كتاب 21", url:"https://example.com/book21" },
+{ id:22, title:"كتاب 22", url:"https://example.com/book22" },
+{ id:23, title:"كتاب 23", url:"https://example.com/book23" },
+{ id:24, title:"كتاب 24", url:"https://example.com/book24" },
+{ id:25, title:"كتاب 25", url:"https://example.com/book25" },
+{ id:26, title:"كتاب 26", url:"https://example.com/book26" },
+{ id:27, title:"كتاب 27", url:"https://example.com/book27" },
+{ id:28, title:"كتاب 28", url:"https://example.com/book28" },
+{ id:29, title:"كتاب 29", url:"https://example.com/book29" },
+{ id:30, title:"كتاب 30", url:"https://example.com/book30" },
+{ id:31, title:"كتاب 31", url:"https://example.com/book31" },
+{ id:32, title:"كتاب 32", url:"https://example.com/book32" },
+{ id:33, title:"كتاب 33", url:"https://example.com/book33" },
+{ id:34, title:"كتاب 34", url:"https://example.com/book34" },
+{ id:35, title:"كتاب 35", url:"https://example.com/book35" },
+{ id:36, title:"كتاب 36", url:"https://example.com/book36" },
+{ id:37, title:"كتاب 37", url:"https://example.com/book37" },
+{ id:38, title:"كتاب 38", url:"https://example.com/book38" },
+{ id:39, title:"كتاب 39", url:"https://example.com/book39" },
+{ id:40, title:"كتاب 40", url:"https://example.com/book40" },
+{ id:41, title:"كتاب 41", url:"https://example.com/book41" },
+{ id:42, title:"كتاب 42", url:"https://example.com/book42" },
+{ id:43, title:"كتاب 43", url:"https://example.com/book43" },
+{ id:44, title:"كتاب 44", url:"https://example.com/book44" },
+{ id:45, title:"كتاب 45", url:"https://example.com/book45" },
+{ id:46, title:"كتاب 46", url:"https://example.com/book46" },
+{ id:47, title:"كتاب 47", url:"https://example.com/book47" },
+{ id:48, title:"كتاب 48", url:"https://example.com/book48" },
+{ id:49, title:"كتاب 49", url:"https://example.com/book49" },
+{ id:50, title:"كتاب 50", url:"https://example.com/book50" }
+];// الكتب من 51 إلى 100 (الدفعة الثانية)
+const moreBooks = [
+{ id:51, title:"كتاب 51", url:"https://example.com/book51" },
+{ id:52, title:"كتاب 52", url:"https://example.com/book52" },
+{ id:53, title:"كتاب 53", url:"https://example.com/book53" },
+{ id:54, title:"كتاب 54", url:"https://example.com/book54" },
+{ id:55, title:"كتاب 55", url:"https://example.com/book55" },
+{ id:56, title:"كتاب 56", url:"https://example.com/book56" },
+{ id:57, title:"كتاب 57", url:"https://example.com/book57" },
+{ id:58, title:"كتاب 58", url:"https://example.com/book58" },
+{ id:59, title:"كتاب 59", url:"https://example.com/book59" },
+{ id:60, title:"كتاب 60", url:"https://example.com/book60" },
+{ id:61, title:"كتاب 61", url:"https://example.com/book61" },
+{ id:62, title:"كتاب 62", url:"https://example.com/book62" },
+{ id:63, title:"كتاب 63", url:"https://example.com/book63" },
+{ id:64, title:"كتاب 64", url:"https://example.com/book64" },
+{ id:65, title:"كتاب 65", url:"https://example.com/book65" },
+{ id:66, title:"كتاب 66", url:"https://example.com/book66" },
+{ id:67, title:"كتاب 67", url:"https://example.com/book67" },
+{ id:68, title:"كتاب 68", url:"https://example.com/book68" },
+{ id:69, title:"كتاب 69", url:"https://example.com/book69" },
+{ id:70, title:"كتاب 70", url:"https://example.com/book70" },
+{ id:71, title:"كتاب 71", url:"https://example.com/book71" },
+{ id:72, title:"كتاب 72", url:"https://example.com/book72" },
+{ id:73, title:"كتاب 73", url:"https://example.com/book73" },
+{ id:74, title:"كتاب 74", url:"https://example.com/book74" },
+{ id:75, title:"كتاب 75", url:"https://example.com/book75" },
+{ id:76, title:"كتاب 76", url:"https://example.com/book76" },
+{ id:77, title:"كتاب 77", url:"https://example.com/book77" },
+{ id:78, title:"كتاب 78", url:"https://example.com/book78" },
+{ id:79, title:"كتاب 79", url:"https://example.com/book79" },
+{ id:80, title:"كتاب 80", url:"https://example.com/book80" },
+{ id:81, title:"كتاب 81", url:"https://example.com/book81" },
+{ id:82, title:"كتاب 82", url:"https://example.com/book82" },
+{ id:83, title:"كتاب 83", url:"https://example.com/book83" },
+{ id:84, title:"كتاب 84", url:"https://example.com/book84" },
+{ id:85, title:"كتاب 85", url:"https://example.com/book85" },
+{ id:86, title:"كتاب 86", url:"https://example.com/book86" },
+{ id:87, title:"كتاب 87", url:"https://example.com/book87" },
+{ id:88, title:"كتاب 88", url:"https://example.com/book88" },
+{ id:89, title:"كتاب 89", url:"https://example.com/book89" },
+{ id:90, title:"كتاب 90", url:"https://example.com/book90" },
+{ id:91, title:"كتاب 91", url:"https://example.com/book91" },
+{ id:92, title:"كتاب 92", url:"https://example.com/book92" },
+{ id:93, title:"كتاب 93", url:"https://example.com/book93" },
+{ id:94, title:"كتاب 94", url:"https://example.com/book94" },
+{ id:95, title:"كتاب 95", url:"https://example.com/book95" },
+{ id:96, title:"كتاب 96", url:"https://example.com/book96" },
+{ id:97, title:"كتاب 97", url:"https://example.com/book97" },
+{ id:98, title:"كتاب 98", url:"https://example.com/book98" },
+{ id:99, title:"كتاب 99", url:"https://example.com/book99" },
+{ id:100, title:"كتاب 100", url:"https://example.com/book100" }
+]:
+// الكتب من 101 إلى 150 (الدفعة الثالثة)
+const moreBooks2 = [
+{ id:101, title:"كتاب 101", url:"https://example.com/book101" },
+{ id:102, title:"كتاب 102", url:"https://example.com/book102" },
+{ id:103, title:"كتاب 103", url:"https://example.com/book103" },
+{ id:104, title:"كتاب 104", url:"https://example.com/book104" },
+{ id:105, title:"كتاب 105", url:"https://example.com/book105" },
+{ id:106, title:"كتاب 106", url:"https://example.com/book106" },
+{ id:107, title:"كتاب 107", url:"https://example.com/book107" },
+{ id:108, title:"كتاب 108", url:"https://example.com/book108" },
+{ id:109, title:"كتاب 109", url:"https://example.com/book109" },
+{ id:110, title:"كتاب 110", url:"https://example.com/book110" },
+{ id:111, title:"كتاب 111", url:"https://example.com/book111" },
+{ id:112, title:"كتاب 112", url:"https://example.com/book112" },
+{ id:113, title:"كتاب 113", url:"https://example.com/book113" },
+{ id:114, title:"كتاب 114", url:"https://example.com/book114" },
+{ id:115, title:"كتاب 115", url:"https://example.com/book115" },
+{ id:116, title:"كتاب 116", url:"https://example.com/book116" },
+{ id:117, title:"كتاب 117", url:"https://example.com/book117" },
+{ id:118, title:"كتاب 118", url:"https://example.com/book118" },
+{ id:119, title:"كتاب 119", url:"https://example.com/book119" },
+{ id:120, title:"كتاب 120", url:"https://example.com/book120" },
+{ id:121, title:"كتاب 121", url:"https://example.com/book121" },
+{ id:122, title:"كتاب 122", url:"https://example.com/book122" },
+{ id:123, title:"كتاب 123", url:"https://example.com/book123" },
+{ id:124, title:"كتاب 124", url:"https://example.com/book124" },
+{ id:125, title:"كتاب 125", url:"https://example.com/book125" },
+{ id:126, title:"كتاب 126", url:"https://example.com/book126" },
+{ id:127, title:"كتاب 127", url:"https://example.com/book127" },
+{ id:128, title:"كتاب 128", url:"https://example.com/book128" },
+{ id:129, title:"كتاب 129", url:"https://example.com/book129" },
+{ id:130, title:"كتاب 130", url:"https://example.com/book130" },
+{ id:131, title:"كتاب 131", url:"https://example.com/book131" },
+{ id:132, title:"كتاب 132", url:"https://example.com/book132" },
+{ id:133, title:"كتاب 133", url:"https://example.com/book133" },
+{ id:134, title:"كتاب 134", url:"https://example.com/book134" },
+{ id:135, title:"كتاب 135", url:"https://example.com/book135" },
+{ id:136, title:"كتاب 136", url:"https://example.com/book136" },
+{ id:137, title:"كتاب 137", url:"https://example.com/book137" },
+{ id:138, title:"كتاب 138", url:"https://example.com/book138" },
+{ id:139, title:"كتاب 139", url:"https://example.com/book139" },
+{ id:140, title:"كتاب 140", url:"https://example.com/book140" },
+{ id:141, title:"كتاب 141", url:"https://example.com/book141" },
+{ id:142, title:"كتاب 142", url:"https://example.com/book142" },
+{ id:143, title:"كتاب 143", url:"https://example.com/book143" },
+{ id:144, title:"كتاب 144", url:"https://example.com/book144" },
+{ id:145, title:"كتاب 145", url:"https://example.com/book145" },
+{ id:146, title:"كتاب 146", url:"https://example.com/book146" },
+{ id:147, title:"كتاب 147", url:"https://example.com/book147" },
+{ id:148, title:"كتاب 148", url:"https://example.com/book148" },
+{ id:149, title:"كتاب 149", url:"https://example.com/book149" },
+{ id:150, title:"كتاب 150", url:"https://example.com/book150" }
+];
+
+// دمج الدفعة الثالثة مع المصفوفة الرئيسية
+books.push(...moreBooks2);
+// دمج الدفعتين معًا
+books.push(...moreBooks);
+
+// عرض الكتب في الصفحة
+function showBooks() {
+    const container = document.getElementById('booksContainer');
+    container.innerHTML = '';
+    books.forEach(b => {
+        const btn = document.createElement('button');
+        btn.innerText = b.id + ". " + b.title;
+        btn.onclick = () => window.open(b.url, "_blank");
+        container.appendChild(btn);
+    });
+}
+
+// AI للاستشارات المالية والدعم النفسي
+document.getElementById('askAI').addEventListener('click', () => {
+    const question = document.getElementById('aiInput').value.toLowerCase();
+    const output = document.getElementById('aiOutput');
+
+    if(question.includes("مال") || question.includes("استثمار") || question.includes("عمل")){
+        output.innerHTML = "نصيحة مالية: ركز على تطوير مهاراتك واكتساب خبرات عملية.";
+    } else if(question.includes("حزن") || question.includes("ضغط") || question.includes("توتر")){
+        output.innerHTML = "دعم نفسي: حاول تدوين أفكارك وأهدافك اليومية، وخذ استراحة قصيرة عند الحاجة.";
+    } else if(question.includes("سعادة") || question.includes("فرح") || question.includes("سرور")){
+        output.innerHTML = "نصيحة حياتية: مارس نشاطًا تحبه يوميًا وحافظ على علاقات اجتماعية إيجابية.";
+    } else {
+        output.innerHTML = "آسف، لا أستطيع الإجابة عن هذا السؤال.";
+    }
+});
+
+// عرض الكتب عند فتح الصفحة
+showBooks();
+</script>
+
 </body>
-</html>
+  </html>
