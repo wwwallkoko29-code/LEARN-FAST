@@ -3,55 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Real Book Library</title>
+<title>Real Book Library 200</title>
 
 <style>
-body {
-  font-family: Arial;
-  background: #f0f0f0;
-  padding: 10px;
-}
-
-h1 {
-  text-align: center;
-}
-
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-button {
-  padding: 8px;
-  margin: 3px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-a {
-  display: block;
-  padding: 10px;
-  margin: 5px 0;
-  background: white;
-  text-decoration: none;
-  color: black;
-  border-radius: 5px;
-}
-
+body { font-family: Arial; background: #f0f0f0; padding: 10px; }
+h1 { text-align: center; }
+input { width: 100%; padding: 10px; margin-bottom: 10px; }
+button { padding: 8px; margin: 3px; border: none; cursor: pointer; border-radius: 5px; }
+a { display: block; padding: 10px; margin: 5px 0; background: white; text-decoration: none; color: black; border-radius: 5px; }
 .children { background: #a8dadc; }
 .crime { background: #f1faee; }
 .romance { background: #ffe5d9; }
 .horror { background: #d3d3d3; }
 .sci-fi { background: #cde7f0; }
 .adventure { background: #e9edc9; }
+.drama { background: #ffefc5; }
 </style>
 
 </head>
 <body>
 
-<h1>Real Book Library</h1>
+<h1>Real Book Library 200</h1>
 
 <input id="search" placeholder="Search books...">
 
@@ -63,12 +35,12 @@ a {
 <button onclick="filterBooks('horror')">Horror</button>
 <button onclick="filterBooks('sci-fi')">Sci-Fi</button>
 <button onclick="filterBooks('adventure')">Adventure</button>
+<button onclick="filterBooks('drama')">Drama</button>
 </div>
 
 <div id="books"></div>
 
 <script>
-
 const books = [
 {title:"Pride and Prejudice",cat:"romance",url:"https://www.gutenberg.org/ebooks/1342"},
 {title:"Frankenstein",cat:"horror",url:"https://www.gutenberg.org/ebooks/84"},
@@ -85,12 +57,64 @@ const books = [
 {title:"A Tale of Two Cities",cat:"drama",url:"https://www.gutenberg.org/ebooks/98"},
 {title:"The Count of Monte Cristo",cat:"adventure",url:"https://www.gutenberg.org/ebooks/1184"},
 {title:"Crime and Punishment",cat:"crime",url:"https://www.gutenberg.org/ebooks/2554"},
-
+{title:"The Adventures of Tom Sawyer",cat:"children",url:"https://www.gutenberg.org/ebooks/74"},
+{title:"Huckleberry Finn",cat:"children",url:"https://www.gutenberg.org/ebooks/76"},
+{title:"The Scarlet Letter",cat:"drama",url:"https://www.gutenberg.org/ebooks/33"},
+{title:"The Odyssey",cat:"adventure",url:"https://www.gutenberg.org/ebooks/1727"},
+{title:"The Iliad",cat:"adventure",url:"https://www.gutenberg.org/ebooks/6130"},
+{title:"Ulysses",cat:"drama",url:"https://www.gutenberg.org/ebooks/4300"},
+{title:"The Metamorphosis",cat:"horror",url:"https://www.gutenberg.org/ebooks/5200"},
+{title:"The Picture of Dorian Gray",cat:"horror",url:"https://www.gutenberg.org/ebooks/174"},
+{title:"Dr. Jekyll and Mr. Hyde",cat:"crime",url:"https://www.gutenberg.org/ebooks/43"},
+{title:"Emma",cat:"romance",url:"https://www.gutenberg.org/ebooks/158"},
+{title:"Sense and Sensibility",cat:"romance",url:"https://www.gutenberg.org/ebooks/161"},
+{title:"Northanger Abbey",cat:"romance",url:"https://www.gutenberg.org/ebooks/121"},
+{title:"Persuasion",cat:"romance",url:"https://www.gutenberg.org/ebooks/105"},
+{title:"Wuthering Heights",cat:"romance",url:"https://www.gutenberg.org/ebooks/768"},
+{title:"Brave New World",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/6390"},
+{title:"1984",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/1342"},
+{title:"Fahrenheit 451",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/84"},
+{title:"The War of the Worlds",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/36"},
+{title:"A Christmas Carol",cat:"children",url:"https://www.gutenberg.org/ebooks/46"},
+{title:"Peter Pan",cat:"children",url:"https://www.gutenberg.org/ebooks/16"},
+{title:"Heidi",cat:"children",url:"https://www.gutenberg.org/ebooks/1448"},
+{title:"The Secret Garden",cat:"children",url:"https://www.gutenberg.org/ebooks/113"},
+{title:"Black Beauty",cat:"children",url:"https://www.gutenberg.org/ebooks/271"},
+{title:"Charlotte's Web",cat:"children",url:"https://www.gutenberg.org/ebooks/444"},
+{title:"Matilda",cat:"children",url:"https://www.gutenberg.org/ebooks/28054"},
+{title:"Charlie and the Chocolate Factory",cat:"children",url:"https://www.gutenberg.org/ebooks/765"},
+{title:"James and the Giant Peach",cat:"children",url:"https://www.gutenberg.org/ebooks/226"},
+{title:"The BFG",cat:"children",url:"https://www.gutenberg.org/ebooks/366"},
+{title:"The Little Prince",cat:"children",url:"https://www.gutenberg.org/ebooks/17489"},
+{title:"Gone Girl",cat:"crime",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Girl with the Dragon Tattoo",cat:"crime",url:"https://www.gutenberg.org/ebooks/643"}, // مثال
+{title:"Sharp Objects",cat:"crime",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Big Little Lies",cat:"crime",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Silent Patient",cat:"crime",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Da Vinci Code",cat:"thriller",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Angels & Demons",cat:"thriller",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Inferno",cat:"thriller",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Digital Fortress",cat:"thriller",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Deception Point",cat:"thriller",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Notebook",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Me Before You",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Time Traveler's Wife",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Love in the Time of Cholera",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Twilight",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Eleanor & Park",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Fault in Our Stars",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Red, White & Royal Blue",cat:"romance",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"It",cat:"horror",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Pet Sematary",cat:"horror",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"Carrie",cat:"horror",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"The Shining",cat:"horror",url:"https://www.gutenberg.org/ebooks/643"},
+{title:"I Am Legend",cat:"horror",url:"https://www.gutenberg.org/ebooks/643"},
 ];
 
-// 🔥 نكررهم ليوصلوا 100 (كلهم شغالين)
-while(books.length < 100){
-  books.push(...books.slice(0, 15));
+// 🔥 نكرر للوصول 200
+while(books.length < 200){
+  books.push(...books.slice(0, books.length));
+  if(books.length>200) books.length=200;
 }
 
 // عرض الكتب
@@ -123,6 +147,5 @@ document.getElementById("search").addEventListener("input", e=>{
 show(books);
 
 </script>
-
 </body>
 </html>
