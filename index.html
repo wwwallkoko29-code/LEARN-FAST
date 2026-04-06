@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learn Fast</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 10px; background: #f0f0f0; }
+h1 { text-align: center; color: #2c3e50; }
+select, button, textarea { margin: 5px 0; width: 100%; padding: 8px; }
+#booksContainer button { display: block; width: 100%; margin: 3px 0; }
+#aiOutput { margin-top: 10px; background: #fff; padding: 10px; border-radius: 5px; min-height: 50px; }
+</style>
+</head>
+<body>
+
+<h1>تطبيق Learn Fast</h1>
+
+<label>اختر اللغة:</label>
+<select id="language">
+  <option value="ar">العربية</option>
+  <option value="ku">السورانية</option>
+</select>
+
+<label>اختر الصف:</label>
+<select id="grade">
+  <option value="7">الصف 7</option>
+  <option value="8">الصف 8</option>
+  <option value="9">الصف 9</option>
+  <option value="10">الصف 10</option>
+  <option value="11">الصف 11</option>
+  <option value="12">الصف 12</option>
+</select>
+
+<h2>الكتب المتاحة:</h2>
+<div id="booksContainer"></div>
+
+<h2>استشارات AI:</h2>
+<textarea id="aiInput" placeholder="اكتب سؤالك هنا..."></textarea>
+<button id="askAI">اسأل AI</button>
+<div id="aiOutput"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
