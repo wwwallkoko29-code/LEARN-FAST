@@ -88,7 +88,7 @@ const categoryColors = {
   "general": "#8d99ae"
 };
 
-// عرض الكتب بدون أي اختفاء
+// عرض الكتب
 function displayBooks(books) {
   booksContainer.innerHTML = "";
   if (books.length === 0) {
@@ -121,13 +121,13 @@ document.querySelectorAll(".category-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const category = btn.dataset.category.toLowerCase();
     document.querySelectorAll(".category-btn").forEach(b => b.style.opacity="1");
-    btn.style.opacity="0.6"; // تمييز الفئة
+    btn.style.opacity="0.6";
     if(category === "all") displayBooks(allBooks);
     else displayBooks(allBooks.filter(b => b.category.includes(category)));
   });
 });
 
-// جلب الكتب
+// جلب الكتب من Gutendex مع تجاهل الكتب بدون رابط HTML صالح
 async function fetchAllBooks(maxBooks = 200) {
   let page = 1;
   let books = [];
@@ -138,8 +138,9 @@ async function fetchAllBooks(maxBooks = 200) {
     const data = await response.json();
     data.results.forEach(book => {
       if (!uniqueBooks.has(book.id)) {
+        let url = book.formats["text/html; charset=utf-8"] || book.formats["text/plain; charset=utf-8"] || book.formats["text/plain"] || null;
+        if (!url) return; // تجاهل الكتب بدون رابط
         uniqueBooks.add(book.id);
-        let url = book.formats["text/html; charset=utf-8"] || book.formats["text/plain"] || "#";
         books.push({
           id: book.id,
           title: book.title,
@@ -158,9 +159,10 @@ async function fetchAllBooks(maxBooks = 200) {
 
 // بدء التشغيل
 (async function init() {
+  booksContainer.innerHTML = "<p>Loading books…</p>";
   allBooks = await fetchAllBooks(200);
   filteredBooks = allBooks;
-  displayBooks(allBooks); // تظهر كل الكتب مباشرة
+  displayBooks(allBooks);
 })();
 </script>
 </body>
