@@ -1,199 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Book Library 100</title>
-<style>
-body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
-h1 { text-align: center; color: #2c3e50; }
-#searchInput { width: 100%; padding: 10px; margin-bottom: 10px; }
-#categories { display: flex; flex-wrap: wrap; margin-bottom: 15px; }
-.category-btn { padding: 8px 12px; margin: 5px; border: none; cursor: pointer; border-radius: 5px; }
-.category-btn.active { font-weight: bold; border: 2px solid #333; }
-#booksContainer button { display: block; width: 100%; margin: 3px 0; padding: 8px; border: none; cursor: pointer; text-align: left; border-radius: 5px; }
-.category-children { background-color: #a8dadc; }
-.category-crime { background-color: #f1faee; }
-.category-romance { background-color: #ffe5d9; }
-.category-thriller { background-color: #f8edeb; }
-.category-horror { background-color: #d8bfd8; }
-.category-scifi { background-color: #cce7ff; }
-.category-history { background-color: #fff2cc; }
-</style>
-</head>
-<body>
-<h1>Book Library 100</h1>
-<input type="text" id="searchInput" placeholder="Search books by title, author or category...">
-<div id="categories">
-  <button class="category-btn" data-category="all">All</button>
-  <button class="category-btn" data-category="children">Children</button>
-  <button class="category-btn" data-category="crime">Crime</button>
-  <button class="category-btn" data-category="romance">Romance</button>
-  <button class="category-btn" data-category="thriller">Thriller</button>
-  <button class="category-btn" data-category="horror">Horror</button>
-  <button class="category-btn" data-category="scifi">Sci-Fi</button>
-  <button class="category-btn" data-category="history">History</button>
-</div>
-<div id="booksContainer"></div>
+const allBooks = [
 
-<script>
-const books = [
-  // Children books 1-20
-  { id:1, title:"The Little Prince", author:"Antoine de Saint-Exupéry", year:1943, category:"children" },
-  { id:2, title:"Alice's Adventures in Wonderland", author:"Lewis Carroll", year:1865, category:"children" },
-  { id:3, title:"Peter Pan", author:"J.M. Barrie", year:1911, category:"children" },
-  { id:4, title:"Heidi", author:"Johanna Spyri", year:1881, category:"children" },
-  { id:5, title:"The Secret Garden", author:"Frances Hodgson Burnett", year:1911, category:"children" },
-  { id:6, title:"Black Beauty", author:"Anna Sewell", year:1877, category:"children" },
-  { id:7, title:"The Jungle Book", author:"Rudyard Kipling", year:1894, category:"children" },
-  { id:8, title:"The Wonderful Wizard of Oz", author:"L. Frank Baum", year:1900, category:"children" },
-  { id:9, title:"Pinocchio", author:"Carlo Collodi", year:1883, category:"children" },
-  { id:10, title:"Anne of Green Gables", author:"Lucy Maud Montgomery", year:1908, category:"children" },
-  { id:11, title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, category:"children" },
-  { id:12, title:"The Tale of Peter Rabbit", author:"Beatrix Potter", year:1902, category:"children" },
-  { id:13, title:"Grimm's Fairy Tales", author:"Brothers Grimm", year:1812, category:"children" },
-  { id:14, title:"The Adventures of Tom Sawyer", author:"Mark Twain", year:1876, category:"children" },
-  { id:15, title:"The Adventures of Huckleberry Finn", author:"Mark Twain", year:1884, category:"children" },
-  { id:16, title:"A Little Princess", author:"Frances Hodgson Burnett", year:1905, category:"children" },
-  { id:17, title:"Little Women", author:"Louisa May Alcott", year:1868, category:"children" },
-  { id:18, title:"Fairy Tales by Hans Christian Andersen", author:"Hans Christian Andersen", year:1835, category:"children" },
-  { id:19, title:"Just So Stories", author:"Rudyard Kipling", year:1902, category:"children" },
-  { id:20, title:"The Velveteen Rabbit", author:"Margery Williams", year:1922, category:"children" },
+{ id:1, title:"Pride and Prejudice", author:"Jane Austen", year:1813, category:"romance",
+url:"https://www.gutenberg.org/ebooks/1342" },
 
-  // Crime 21-35
-  { id:21, title:"The Adventures of Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, category:"crime" },
-  { id:22, title:"Dr. Jekyll and Mr. Hyde", author:"Robert Louis Stevenson", year:1886, category:"crime" },
-  { id:23, title:"The Moonstone", author:"Wilkie Collins", year:1868, category:"crime" },
-  { id:24, title:"The Mystery of Edwin Drood", author:"Charles Dickens", year:1870, category:"crime" },
-  { id:25, title:"The Red-Headed League", author:"Arthur Conan Doyle", year:1891, category:"crime" },
-  { id:26, title:"The Hound of the Baskervilles", author:"Arthur Conan Doyle", year:1902, category:"crime" },
-  { id:27, title:"The Woman in White", author:"Wilkie Collins", year:1859, category:"crime" },
-  { id:28, title:"The Murders in the Rue Morgue", author:"Edgar Allan Poe", year:1841, category:"crime" },
-  { id:29, title:"The Purloined Letter", author:"Edgar Allan Poe", year:1845, category:"crime" },
-  { id:30, title:"The Black Cat", author:"Edgar Allan Poe", year:1843, category:"crime" },
-  { id:31, title:"The Speckled Band", author:"Arthur Conan Doyle", year:1892, category:"crime" },
-  { id:32, title:"The Valley of Fear", author:"Arthur Conan Doyle", year:1915, category:"crime" },
-  { id:33, title:"The Mystery of the Yellow Room", author:"Gaston Leroux", year:1907, category:"crime" },
-  { id:34, title:"The Phantom of the Opera", author:"Gaston Leroux", year:1910, category:"crime" },
-  { id:35, title:"The Lodger", author:"Marie Belloc Lowndes", year:1913, category:"crime" },
+{ id:2, title:"Frankenstein", author:"Mary Shelley", year:1818, category:"horror",
+url:"https://www.gutenberg.org/ebooks/84" },
 
-  // Romance 36-50
-  { id:36, title:"Pride and Prejudice", author:"Jane Austen", year:1813, category:"romance" },
-  { id:37, title:"Jane Eyre", author:"Charlotte Brontë", year:1847, category:"romance" },
-  { id:38, title:"Wuthering Heights", author:"Emily Brontë", year:1847, category:"romance" },
-  { id:39, title:"Sense and Sensibility", author:"Jane Austen", year:1811, category:"romance" },
-  { id:40, title:"Emma", author:"Jane Austen", year:1815, category:"romance" },
-  { id:41, title:"North and South", author:"Elizabeth Gaskell", year:1854, category:"romance" },
-  { id:42, title:"Persuasion", author:"Jane Austen", year:1817, category:"romance" },
-  { id:43, title:"The Age of Innocence", author:"Edith Wharton", year:1920, category:"romance" },
-  { id:44, title:"Madame Bovary", author:"Gustave Flaubert", year:1856, category:"romance" },
-  { id:45, title:"Anna Karenina", author:"Leo Tolstoy", year:1877, category:"romance" },
-  { id:46, title:"Doctor Zhivago", author:"Boris Pasternak", year:1957, category:"romance" },
-  { id:47, title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, category:"romance" },
-  { id:48, title:"A Room with a View", author:"E.M. Forster", year:1908, category:"romance" },
-  { id:49, title:"Tess of the d'Urbervilles", author:"Thomas Hardy", year:1891, category:"romance" },
-  { id:50, title:"Little Women", author:"Louisa May Alcott", year:1868, category:"romance" },
+{ id:3, title:"Dracula", author:"Bram Stoker", year:1897, category:"horror",
+url:"https://www.gutenberg.org/ebooks/345" },
 
-  // Thriller 51-65
-  { id:51, title:"The Da Vinci Code", author:"Dan Brown", year:2003, category:"thriller" },
-  { id:52, title:"Angels & Demons", author:"Dan Brown", year:2000, category:"thriller" },
-  { id:53, title:"Inferno", author:"Dan Brown", year:2013, category:"thriller" },
-  { id:54, title:"The Girl with the Dragon Tattoo", author:"Stieg Larsson", year:2005, category:"thriller" },
-  { id:55, title:"The Girl Who Played with Fire", author:"Stieg Larsson", year:2006, category:"thriller" },
-  { id:56, title:"The Girl Who Kicked the Hornet's Nest", author:"Stieg Larsson", year:2007, category:"thriller" },
-  { id:57, title:"Gone Girl", author:"Gillian Flynn", year:2012, category:"thriller" },
-  { id:58, title:"Sharp Objects", author:"Gillian Flynn", year:2006, category:"thriller" },
-  { id:59, title:"Dark Places", author:"Gillian Flynn", year:2009, category:"thriller" },
-  { id:60, title:"Before I Go to Sleep", author:"S.J. Watson", year:2011, category:"thriller" },
-  { id:61, title:"Murder on the Orient Express", author:"Agatha Christie", year:1934, category:"thriller" },
-  { id:62, title:"And Then There Were None", author:"Agatha Christie", year:1939, category:"thriller" },
-  { id:63, title:"The Maltese Falcon", author:"Dashiell Hammett", year:1930, category:"thriller" },
-  { id:64, title:"The Big Sleep", author:"Raymond Chandler", year:1939, category:"thriller" },
-  { id:65, title:"The ABC Murders", author:"Agatha Christie", year:1936, category:"thriller" },
+{ id:4, title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, category:"children",
+url:"https://www.gutenberg.org/ebooks/11" },
 
-  // Horror 66-80
-  { id:66, title:"Dracula", author:"Bram Stoker", year:1897, category:"horror" },
-  { id:67, title:"Frankenstein", author:"Mary Shelley", year:1818, category:"horror" },
-  { id:68, title:"The Turn of the Screw", author:"Henry James", year:1898, category:"horror" },
-  { id:69, title:"Carmilla", author:"J. Sheridan Le Fanu", year:1872, category:"horror" },
-  { id:70, title:"The Call of Cthulhu", author:"H.P. Lovecraft", year:1928, category:"horror" },
-  { id:71, title:"The Monkey's Paw", author:"W.W. Jacobs", year:1902, category:"horror" },
-  { id:72, title:"The Picture of Dorian Gray", author:"Oscar Wilde", year:1890, category:"horror" },
-  { id:73, title:"The Legend of Sleepy Hollow", author:"Washington Irving", year:1820, category:"horror" },
-  { id:74, title:"The Haunting of Hill House", author:"Shirley Jackson", year:1959, category:"horror" },
-  { id:75, title:"Hell House", author:"Richard Matheson", year:1971, category:"horror" },
-  
-  // Sci-Fi 76-85
-  { id:76, title:"1984", author:"George Orwell", year:1949, category:"scifi" },
-  { id:77, title:"Brave New World", author:"Aldous Huxley", year:1932, category:"scifi" },
-  { id:78, title:"Fahrenheit 451", author:"Ray Bradbury", year:1953, category:"scifi" },
-  { id:79, title:"The War of the Worlds", author:"H.G. Wells", year:1898, category:"scifi" },
-  { id:80, title:"The Time Machine", author:"H.G. Wells", year:1895, category:"scifi" },
-  { id:81, title:"The Invisible Man", author:"H.G. Wells", year:1897, category:"scifi" },
-  { id:82, title:"Journey to the Center of the Earth", author:"Jules Verne", year:1864, category:"scifi" },
-  { id:83, title:"Twenty Thousand Leagues Under the Sea", author:"Jules Verne", year:1870, category:"scifi" },
-  { id:84, title:"Around the World in Eighty Days", author:"Jules Verne", year:1873, category:"scifi" },
-  { id:85, title:"The Martian Chronicles", author:"Ray Bradbury", year:1950, category:"scifi" },
+{ id:5, title:"Moby Dick", author:"Herman Melville", year:1851, category:"adventure",
+url:"https://www.gutenberg.org/ebooks/2701" },
 
-  // History 86-100
-  { id:86, title:"The History of the Decline and Fall of the Roman Empire", author:"Edward Gibbon", year:1776, category:"history" },
-  { id:87, title:"The Prince", author:"Niccolò Machiavelli", year:1532, category:"history" },
-  { id:88, title:"The Art of War", author:"Sun Tzu", year:-500, category:"history" },
-  { id:89, title:"Democracy in America", author:"Alexis de Tocqueville", year:1835, category:"history" },
-  { id:90, title:"The Communist Manifesto", author:"Karl Marx & Friedrich Engels", year:1848, category:"history" },
-  { id:91, title:"A Short History of the World", author:"H.G. Wells", year:1922, category:"history" },
-  { id:92, title:"Guns, Germs, and Steel", author:"Jared Diamond", year:1997, category:"history" },
-  { id:93, title:"Sapiens: A Brief History of Humankind", author:"Yuval Noah Harari", year:2011, category:"history" },
-  { id:94, title:"A People's History of the United States", author:"Howard Zinn", year:1980, category:"history" },
-  { id:95, title:"The Silk Roads", author:"Peter Frankopan", year:2015, category:"history" },
-  { id:96, title:"The Guns of August", author:"Barbara Tuchman", year:1962, category:"history" },
-  { id:97, title:"The Rise and Fall of the Third Reich", author:"William L. Shirer", year:1960, category:"history" },
-  { id:98, title:"Postwar: A History of Europe Since 1945", author:"Tony Judt", year:2005, category:"history" },
-  { id:99, title:"The Cold War: A New History", author:"John Lewis Gaddis", year:2005, category:"history" },
-  { id:100, title:"A History of Modern Europe", author:"John Merriman", year:2010, category:"history" }
+{ id:6, title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, category:"crime",
+url:"https://www.gutenberg.org/ebooks/1661" },
+
+{ id:7, title:"Jane Eyre", author:"Charlotte Brontë", year:1847, category:"romance",
+url:"https://www.gutenberg.org/ebooks/1260" },
+
+{ id:8, title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, category:"drama",
+url:"https://www.gutenberg.org/ebooks/64317" },
+
+{ id:9, title:"Wuthering Heights", author:"Emily Brontë", year:1847, category:"romance",
+url:"https://www.gutenberg.org/ebooks/768" },
+
+{ id:10, title:"Little Women", author:"Louisa May Alcott", year:1868, category:"children",
+url:"https://www.gutenberg.org/ebooks/514" },
+
+{ id:11, title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, category:"adventure",
+url:"https://www.gutenberg.org/ebooks/120" },
+
+{ id:12, title:"A Tale of Two Cities", author:"Charles Dickens", year:1859, category:"drama",
+url:"https://www.gutenberg.org/ebooks/98" },
+
+{ id:13, title:"Great Expectations", author:"Charles Dickens", year:1861, category:"drama",
+url:"https://www.gutenberg.org/ebooks/1400" },
+
+{ id:14, title:"The Picture of Dorian Gray", author:"Oscar Wilde", year:1890, category:"drama",
+url:"https://www.gutenberg.org/ebooks/174" },
+
+{ id:15, title:"The Count of Monte Cristo", author:"Alexandre Dumas", year:1844, category:"adventure",
+url:"https://www.gutenberg.org/ebooks/1184" },
+
+{ id:16, title:"Crime and Punishment", author:"Fyodor Dostoevsky", year:1866, category:"crime",
+url:"https://www.gutenberg.org/ebooks/2554" },
+
+{ id:17, title:"War and Peace", author:"Leo Tolstoy", year:1869, category:"drama",
+url:"https://www.gutenberg.org/ebooks/2600" },
+
+{ id:18, title:"Anna Karenina", author:"Leo Tolstoy", year:1877, category:"romance",
+url:"https://www.gutenberg.org/ebooks/1399" },
+
+{ id:19, title:"The Time Machine", author:"H.G. Wells", year:1895, category:"sci-fi",
+url:"https://www.gutenberg.org/ebooks/35" },
+
+{ id:20, title:"The War of the Worlds", author:"H.G. Wells", year:1898, category:"sci-fi",
+url:"https://www.gutenberg.org/ebooks/36" }
+
 ];
-
-// Display books
-const booksContainer = document.getElementById("booksContainer");
-const searchInput = document.getElementById("searchInput");
-const categoryButtons = document.querySelectorAll(".category-btn");
-let selectedCategory = "all";
-
-function displayBooks(filteredBooks){
-  booksContainer.innerHTML = "";
-  filteredBooks.forEach(book=>{
-    const btn = document.createElement("button");
-    btn.textContent = `${book.title} - ${book.author} (${book.year})`;
-    btn.className = `category-${book.category}`;
-    booksContainer.appendChild(btn);
-  });
-}
-
-function filterBooks(){
-  const query = searchInput.value.toLowerCase();
-  const filtered = books.filter(book=>{
-    const matchCategory = selectedCategory === "all" || book.category === selectedCategory;
-    const matchQuery = book.title.toLowerCase().includes(query) || book.author.toLowerCase().includes(query) || book.category.toLowerCase().includes(query);
-    return matchCategory && matchQuery;
-  });
-  displayBooks(filtered);
-}
-
-// Search input
-searchInput.addEventListener("input", filterBooks);
-
-// Category buttons
-categoryButtons.forEach(btn=>{
-  btn.addEventListener("click", ()=>{
-    categoryButtons.forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    selectedCategory = btn.dataset.category;
-    filterBooks();
-  });
-});
-
-// Initial display
-displayBooks(books);
-</script>
-</body>
-</html>
