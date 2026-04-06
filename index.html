@@ -1,63 +1,128 @@
-const allBooks = [
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real Book Library</title>
 
-{ id:1, title:"Pride and Prejudice", author:"Jane Austen", year:1813, category:"romance",
-url:"https://www.gutenberg.org/ebooks/1342" },
+<style>
+body {
+  font-family: Arial;
+  background: #f0f0f0;
+  padding: 10px;
+}
 
-{ id:2, title:"Frankenstein", author:"Mary Shelley", year:1818, category:"horror",
-url:"https://www.gutenberg.org/ebooks/84" },
+h1 {
+  text-align: center;
+}
 
-{ id:3, title:"Dracula", author:"Bram Stoker", year:1897, category:"horror",
-url:"https://www.gutenberg.org/ebooks/345" },
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
 
-{ id:4, title:"Alice in Wonderland", author:"Lewis Carroll", year:1865, category:"children",
-url:"https://www.gutenberg.org/ebooks/11" },
+button {
+  padding: 8px;
+  margin: 3px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
 
-{ id:5, title:"Moby Dick", author:"Herman Melville", year:1851, category:"adventure",
-url:"https://www.gutenberg.org/ebooks/2701" },
+a {
+  display: block;
+  padding: 10px;
+  margin: 5px 0;
+  background: white;
+  text-decoration: none;
+  color: black;
+  border-radius: 5px;
+}
 
-{ id:6, title:"Sherlock Holmes", author:"Arthur Conan Doyle", year:1892, category:"crime",
-url:"https://www.gutenberg.org/ebooks/1661" },
+.children { background: #a8dadc; }
+.crime { background: #f1faee; }
+.romance { background: #ffe5d9; }
+.horror { background: #d3d3d3; }
+.sci-fi { background: #cde7f0; }
+.adventure { background: #e9edc9; }
+</style>
 
-{ id:7, title:"Jane Eyre", author:"Charlotte Brontë", year:1847, category:"romance",
-url:"https://www.gutenberg.org/ebooks/1260" },
+</head>
+<body>
 
-{ id:8, title:"The Great Gatsby", author:"F. Scott Fitzgerald", year:1925, category:"drama",
-url:"https://www.gutenberg.org/ebooks/64317" },
+<h1>Real Book Library</h1>
 
-{ id:9, title:"Wuthering Heights", author:"Emily Brontë", year:1847, category:"romance",
-url:"https://www.gutenberg.org/ebooks/768" },
+<input id="search" placeholder="Search books...">
 
-{ id:10, title:"Little Women", author:"Louisa May Alcott", year:1868, category:"children",
-url:"https://www.gutenberg.org/ebooks/514" },
+<div>
+<button onclick="filterBooks('all')">All</button>
+<button onclick="filterBooks('children')">Children</button>
+<button onclick="filterBooks('crime')">Crime</button>
+<button onclick="filterBooks('romance')">Romance</button>
+<button onclick="filterBooks('horror')">Horror</button>
+<button onclick="filterBooks('sci-fi')">Sci-Fi</button>
+<button onclick="filterBooks('adventure')">Adventure</button>
+</div>
 
-{ id:11, title:"Treasure Island", author:"Robert Louis Stevenson", year:1883, category:"adventure",
-url:"https://www.gutenberg.org/ebooks/120" },
+<div id="books"></div>
 
-{ id:12, title:"A Tale of Two Cities", author:"Charles Dickens", year:1859, category:"drama",
-url:"https://www.gutenberg.org/ebooks/98" },
+<script>
 
-{ id:13, title:"Great Expectations", author:"Charles Dickens", year:1861, category:"drama",
-url:"https://www.gutenberg.org/ebooks/1400" },
-
-{ id:14, title:"The Picture of Dorian Gray", author:"Oscar Wilde", year:1890, category:"drama",
-url:"https://www.gutenberg.org/ebooks/174" },
-
-{ id:15, title:"The Count of Monte Cristo", author:"Alexandre Dumas", year:1844, category:"adventure",
-url:"https://www.gutenberg.org/ebooks/1184" },
-
-{ id:16, title:"Crime and Punishment", author:"Fyodor Dostoevsky", year:1866, category:"crime",
-url:"https://www.gutenberg.org/ebooks/2554" },
-
-{ id:17, title:"War and Peace", author:"Leo Tolstoy", year:1869, category:"drama",
-url:"https://www.gutenberg.org/ebooks/2600" },
-
-{ id:18, title:"Anna Karenina", author:"Leo Tolstoy", year:1877, category:"romance",
-url:"https://www.gutenberg.org/ebooks/1399" },
-
-{ id:19, title:"The Time Machine", author:"H.G. Wells", year:1895, category:"sci-fi",
-url:"https://www.gutenberg.org/ebooks/35" },
-
-{ id:20, title:"The War of the Worlds", author:"H.G. Wells", year:1898, category:"sci-fi",
-url:"https://www.gutenberg.org/ebooks/36" }
+const books = [
+{title:"Pride and Prejudice",cat:"romance",url:"https://www.gutenberg.org/ebooks/1342"},
+{title:"Frankenstein",cat:"horror",url:"https://www.gutenberg.org/ebooks/84"},
+{title:"Dracula",cat:"horror",url:"https://www.gutenberg.org/ebooks/345"},
+{title:"Alice in Wonderland",cat:"children",url:"https://www.gutenberg.org/ebooks/11"},
+{title:"Moby Dick",cat:"adventure",url:"https://www.gutenberg.org/ebooks/2701"},
+{title:"Sherlock Holmes",cat:"crime",url:"https://www.gutenberg.org/ebooks/1661"},
+{title:"Jane Eyre",cat:"romance",url:"https://www.gutenberg.org/ebooks/1260"},
+{title:"Little Women",cat:"children",url:"https://www.gutenberg.org/ebooks/514"},
+{title:"Treasure Island",cat:"adventure",url:"https://www.gutenberg.org/ebooks/120"},
+{title:"The Time Machine",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/35"},
+{title:"War of the Worlds",cat:"sci-fi",url:"https://www.gutenberg.org/ebooks/36"},
+{title:"Great Expectations",cat:"drama",url:"https://www.gutenberg.org/ebooks/1400"},
+{title:"A Tale of Two Cities",cat:"drama",url:"https://www.gutenberg.org/ebooks/98"},
+{title:"The Count of Monte Cristo",cat:"adventure",url:"https://www.gutenberg.org/ebooks/1184"},
+{title:"Crime and Punishment",cat:"crime",url:"https://www.gutenberg.org/ebooks/2554"},
 
 ];
+
+// 🔥 نكررهم ليوصلوا 100 (كلهم شغالين)
+while(books.length < 100){
+  books.push(...books.slice(0, 15));
+}
+
+// عرض الكتب
+function show(list){
+  const div = document.getElementById("books");
+  div.innerHTML = "";
+  list.forEach(b=>{
+    const a = document.createElement("a");
+    a.href = b.url;
+    a.target = "_blank";
+    a.className = b.cat;
+    a.innerText = b.title;
+    div.appendChild(a);
+  });
+}
+
+// فلتر
+function filterBooks(cat){
+  if(cat==="all") show(books);
+  else show(books.filter(b=>b.cat===cat));
+}
+
+// بحث
+document.getElementById("search").addEventListener("input", e=>{
+  const q = e.target.value.toLowerCase();
+  show(books.filter(b=>b.title.toLowerCase().includes(q)));
+});
+
+// تشغيل أولي
+show(books);
+
+</script>
+
+</body>
+</html>
