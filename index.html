@@ -3,200 +3,139 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Book Hub</title>
+<title>Book Library</title>
 
 <style>
 body{
   font-family:Arial;
-  margin:0;
-  background:linear-gradient(120deg,#0f172a,#111827);
+  background:linear-gradient(120deg,#f1f5f9,#e2e8f0);
+  padding:10px;
+}
+
+h1{
+  text-align:center;
+  color:#111;
+}
+
+.buttons{
+  text-align:center;
+  margin-bottom:15px;
+}
+
+button{
+  padding:8px 12px;
+  margin:5px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#1f2937;
   color:white;
 }
 
-header{
-  text-align:center;
-  padding:20px;
-  font-size:22px;
-  font-weight:bold;
-}
-
-.container{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:10px;
-}
-
-.panel{
-  background:rgba(255,255,255,0.05);
-  border-radius:12px;
-  padding:10px;
-  height:85vh;
-  overflow:auto;
-}
-
-input, textarea{
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  border:none;
-  margin-bottom:10px;
+button:hover{
+  opacity:0.8;
 }
 
 .book{
   background:#2563eb;
-  margin:5px 0;
-  padding:10px;
+  color:white;
+  padding:12px;
+  margin:6px 0;
   border-radius:8px;
   cursor:pointer;
 }
 
-.book:hover{opacity:0.8;}
-
-.aiBox{
-  background:#111827;
-  padding:10px;
-  border-radius:10px;
-  margin-bottom:10px;
-}
-
-.userMsg{
-  color:#60a5fa;
-}
-
-.aiMsg{
-  color:#34d399;
+.book:hover{
+  opacity:0.85;
 }
 </style>
 </head>
 
 <body>
 
-<header>AI BOOK HUB</header>
+<h1>Book Library</h1>
 
-<div class="container">
-
-<!-- LIBRARY -->
-<div class="panel">
-
-<h3>📚 Library</h3>
-
-<input id="search" placeholder="Search books...">
-
-<div id="books"></div>
-
+<div class="buttons">
+  <button onclick="filter('all')">All</button>
+  <button onclick="filter('romance')">Romance</button>
+  <button onclick="filter('crime')">Crime</button>
+  <button onclick="filter('horror')">Horror</button>
+  <button onclick="filter('sci-fi')">Sci-Fi</button>
+  <button onclick="filter('children')">Children</button>
+  <button onclick="filter('general')">General</button>
 </div>
 
-<!-- AI -->
-<div class="panel">
-
-<h3>🧠 AI Assistant</h3>
-
-<div id="chat"></div>
-
-<textarea id="prompt" placeholder="Ask AI: recommend books, topics, learning paths..."></textarea>
-<button onclick="askAI()">Ask AI</button>
-
-</div>
-
-</div>
+<div id="list"></div>
 
 <script>
 
-const booksDiv = document.getElementById("books");
-const chat = document.getElementById("chat");
+const list = document.getElementById("list");
 
 let books = [];
 
-/* فلترة بسيطة */
-const banned = ["religion","islam","quran","bible","god","jesus","faith","church"];
+/* فلترة كتب بدون دين */
+const banned = [
+  "religion","islam","quran","bible","god",
+  "jesus","faith","church","mosque","prophet"
+];
 
-/* تحميل الكتب */
-async function loadBooks(){
+/* جلب الكتب */
+async function load(){
   const res = await fetch("https://gutendex.com/books/?page=1");
   const data = await res.json();
 
-  books = data.results.filter(b=>{
-    const text = (b.title + " " + (b.subjects||[]).join(" ")).toLowerCase();
-    if(banned.some(w=>text.includes(w))) return false;
+  books = data.results
+    .filter(b=>{
+      const text = (b.title + " " + (b.subjects||[]).join(" ")).toLowerCase();
+      if(banned.some(w=>text.includes(w))) return false;
 
-    return b.formats["text/html; charset=utf-8"];
-  }).map(b=>({
-    title:b.title,
-    author:(b.authors.map(a=>a.name).join(", ")||"Unknown"),
-    url:b.formats["text/html; charset=utf-8"]
-  }));
+      return b.formats["text/html; charset=utf-8"];
+    })
+    .map(b=>({
+      title:b.title,
+      author:(b.authors.map(a=>a.name).join(", ")||"Unknown"),
+      url:b.formats["text/html; charset=utf-8"],
+      category:detectCategory(b.subjects || [])
+    }));
 
-  renderBooks(books);
+  show(books);
 }
 
-/* عرض الكتب */
-function renderBooks(list){
-  booksDiv.innerHTML = "";
+/* تحديد الفئة */
+function detectCategory(subjects){
+  const s = subjects.join(" ").toLowerCase();
 
-  list.forEach(b=>{
-    const div = document.createElement("div");
+  if(s.includes("love")) return "romance";
+  if(s.includes("crime")) return "crime";
+  if(s.includes("horror")) return "horror";
+  if(s.includes("science") || s.includes("space")) return "sci-fi";
+  if(s.includes("children")) return "children";
+
+  return "general";
+}
+
+/* عرض */
+function show(data){
+  list.innerHTML="";
+
+  data.forEach(b=>{
+    const div=document.createElement("div");
     div.className="book";
-    div.innerHTML = `<b>${b.title}</b><br>${b.author}`;
-    div.onclick = ()=>window.open(b.url,"_blank");
-    booksDiv.appendChild(div);
+    div.innerHTML=`<b>${b.title}</b><br>${b.author}`;
+    div.onclick=()=>window.open(b.url,"_blank");
+    list.appendChild(div);
   });
 }
 
-/* بحث ذكي */
-document.getElementById("search").addEventListener("input",(e)=>{
-  const q = e.target.value.toLowerCase();
+/* فلترة */
+function filter(type){
+  if(type==="all") return show(books);
 
-  const filtered = books.filter(b=>{
-    return b.title.toLowerCase().includes(q) ||
-           b.author.toLowerCase().includes(q) ||
-           smartMatch(q,b.title);
-  });
-
-  renderBooks(filtered);
-});
-
-/* AI بسيط (بدون API) */
-function askAI(){
-  const input = document.getElementById("prompt").value;
-  if(!input) return;
-
-  addMsg("user",input);
-
-  let response = "";
-
-  if(input.includes("programming")){
-    response = "Try: JavaScript basics, Python for beginners, Web development.";
-  }
-  else if(input.includes("science")){
-    response = "Try: Physics fundamentals, Chemistry basics, Biology intro.";
-  }
-  else if(input.includes("history")){
-    response = "Try: World history, Ancient civilizations, Modern history.";
-  }
-  else{
-    response = "I recommend exploring science, programming, and self-development books.";
-  }
-
-  addMsg("ai",response);
-  document.getElementById("prompt").value="";
+  const filtered = books.filter(b=>b.category===type);
+  show(filtered);
 }
 
-/* رسائل */
-function addMsg(type,text){
-  const div = document.createElement("div");
-  div.className = "aiBox";
-  div.innerHTML = `<div class="${type==='user'?'userMsg':'aiMsg'}">${text}</div>`;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
-
-/* ذكاء بسيط في المطابقة */
-function smartMatch(q,title){
-  return title.toLowerCase().split(" ").some(w=>w.startsWith(q));
-}
-
-loadBooks();
+load();
 
 </script>
 
